@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.vo.BoardVo;
 
+import common.SearchCommand;
 import common.pageCommand;
 
 @Controller // 컨트롤러 : 프로젝트 레이어, 웹 요청과 응답 처리
@@ -35,7 +36,6 @@ public class BoardController {
 
 	@RequestMapping(value = "/list.board")
 	public String listView(Integer pageNum, Model model) throws Exception {
-		System.out.println(pageNum);
 		if (pageNum == null) {
 			pageNum = 1;
 		}
@@ -60,6 +60,41 @@ public class BoardController {
 		
 		model.addAttribute("list", result);
 		model.addAttribute("cmd", cmd);
+		model.addAttribute("number", number);
 		return "list";
+	}
+	
+	@RequestMapping("/search.board")
+	public String searchView(SearchCommand search, Model model) throws Exception{
+		Integer pageNum = search.getPageNum();
+		if(pageNum==null) {
+			pageNum = 1;
+		}
+		int pageSize = 10;
+		int currentPage = pageNum;
+		int start = (currentPage - 1) * pageSize + 1;
+		int end = currentPage * pageSize;
+		String type = search.getType();
+		String str = search.getStr();
+		Integer count = boardService.searchSize(type, str);
+		int number = 0;
+		
+		List<BoardVo> result = null;
+		if (count > 0) {
+			result = boardService.search(type, str, start, end);
+		} else {
+			result = Collections.emptyList();
+		}
+
+		number = count - (currentPage - 1) * pageSize;
+		Map<Object, Object> reCount = new HashMap<Object, Object>();
+		
+		pageCommand pageCmd = new pageCommand(currentPage, start, end, count, pageSize, number);
+		
+		model.addAttribute("search", result);
+		model.addAttribute("cmd", pageCmd);
+		model.addAttribute("number", number);
+		
+		return "search";
 	}
 }
