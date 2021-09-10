@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/mvc
+  http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+  
+  
+  
+	<!-- MVC관련 어노테이션 처리 -->
+	<mvc:annotation-driven/> 
+	<mvc:default-servlet-handler/>
+	
+	<mvc:view-resolvers>
+		<mvc:jsp prefix="/WEB-INF/board/" suffix=".jsp"/>
+	</mvc:view-resolvers>	
+	
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>message.label</value>
+			</list>
+		</property>
+		<property name="defaultEncoding" value="UTF-8"/>
+	</bean>
+	
+	
+	<!-- multipart Resolver -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="52428800"/><!-- 최대 업로드 가능 크기 -->
+		<property name="defaultEncoding" value="utf-8"></property>	
+	</bean>
+	
+</beans>
+
+
+

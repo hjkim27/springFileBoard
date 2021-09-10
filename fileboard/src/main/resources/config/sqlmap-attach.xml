@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 스프링이 DB에 쿼리 요청 시 사용하는 메서드가 참조할 sql mapping 파일 정의 -->
+<mapper namespace="attachDao">
+	<insert id="insert" parameterType="attachVo">
+		insert into ATTACH(NUM, FILENAME, BNUM, FILESIZE, CONTENTTYPE) 
+		<if test="num==0">
+		values (ATTACH_SEQ.nextval, #{fileName}, BOARD_SEQ.currval, ${fileSize}, ${contentType})
+		</if>
+		<if test="num!=0">
+		values (ATTACH_SEQ.nextval, #{fileName}, #{bNum}, #{fileSize}, #{contentType})
+		</if>
+		<selectKey keyProperty="num" resultType="Integer">
+			select NVL(max(NUM), 0) from ATTACH
+		</selectKey>
+	</insert>
+	<update id="update">
+		update ATTACH set FILENAME=#{fileName}, FILESIZE=#{fileSize}, CONTENTTYPE=#{contentType} where BNUM=#{bNum}
+	</update>
+	<select id="files" parameterType="Integer" resultType="attachVo">
+		select * from ATTACH where BNUM=#{bNum}
+	</select>
+	<select id="countFile" parameterType="Integer" resultType="Integer">
+		select count(*) from ATTACH where BNUM=#{bNum}
+	</select>
+	
+	<select id="countFileList" resultMap="fileListMap">
+		select BNUM, count(*) filecount from ATTACH group by BNUM
+	</select>
+	<resultMap type="HashMap" id="fileListMap"/>
+</mapper>

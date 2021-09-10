@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 스프링이 DB에 쿼리 요청 시 사용하는 메서드가 참조할 sql mapping 파일 정의 -->
+<mapper namespace="boardDao">
+	<insert id="insert" parameterType="boardVo">
+		insert into BOARD(NUM, WRITER, TITLE, CONTENT, REGDATE, DEPTH, REF, PASSWORD)
+		<if test="ref!=0">
+		 values (BOARD_SEQ.nextval, #{writer}, #{title}, #{content}, systimestamp, #{depth}, #{ref}, #{password})
+		</if>
+		<if test="ref==0">
+		 values (BOARD_SEQ.nextval, #{writer}, #{title}, #{content}, systimestamp, #{depth}, BOARD_SEQ.currval, #{password})
+		</if>
+		 <selectKey keyProperty="num" resultType="Long">
+		 		select NVL(max(ID),0) from BOARD
+		 </selectKey>
+	</insert>
+	<update id="update" parameterType="boardVo">
+		update BOARD set TITLE=#{title}, CONTENT=#{content}, MODDATE=systimestamp where NUM=#{num}		
+	</update>
+	<delete id="delete" parameterType="Integer">
+		delete from BOARD where NUM=#{num} or REF=#{ref}
+	</delete>
+	<select id="selectAll" parameterType="HashMap" resultType="boardVo">
+		select * from 
+			(select ROWNUM RNUM, NUM, WRITER, TITLE, CONTENT, READCOUNT, REGDATE, MODDATE, DEPTH, REF, PASSWORD from 
+				(select * from BOARD order by REF desc, DEPTH asc) 
+				where REF=NUM) 
+			where RNUM <![CDATA[>=]]> #{start} and RNUM <![CDATA[<=]]> #{end}
+	</select>
+	<select id="search" parameterType="HashMap" resultType="boardVo">
+		select * from 
+		(select ROWNUM RNUM, NUM, WRITER, TITLE, CONTENT, READCOUNT, REGDATE, MODDATE, DEPTH, REF, PASSWORD from 
+			(select * from BOARD order by REF desc, DEPTH asc) where
+			${type} LIKE '%'||#{str}||'%' and REF=NUM) where RNUM <![CDATA[>=]]> #{start} and RNUM <![CDATA[<=]]> #{end}
+	</select>
+	<select id="detail" parameterType="Integer" resultType="boardVo">
+		select * from BOARD where NUM=#{num}
+	</select>
+	<select id="detailAnswer" parameterType="Integer" resultType="boardVo">
+		select * from BOARD where REF=#{num} and NUM!=#{num} order by DEPTH	
+	</select>
+	<update id="hitIt" parameterType="Integer">
+		update BOARD set READCOUNT=READCOUNT+1 where NUM=#{num}
+	</update>
+	
+	<select id="boardRef" resultType="HashMap">
+		select REF, count(*) refcount from BOARD group by REF
+	</select>
+	
+	<select id="boardCount" resultType="Integer">
+		select count(distinct REF) from BOARD
+	</select>
+	<select id="searchBoardCount" parameterType="HashMap" resultType="Integer">
+		select count(*) from BOARD where REF=NUM and
+			${type} LIKE '%'||#{str}||'%'
+		
+	</select>
+</mapper>
