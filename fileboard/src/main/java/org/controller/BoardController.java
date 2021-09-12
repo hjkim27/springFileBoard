@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.vo.BoardVo;
 
 import common.SearchCommand;
@@ -34,7 +35,7 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/write.board", method = RequestMethod.POST)
-	public String write(RegistCommand cmd) throws Exception {
+	public String write(RegistCommand cmd, MultipartHttpServletRequest mpReq) throws Exception {
 		BoardVo vo = new BoardVo();
 		vo.setWriter(cmd.getWriter());
 		vo.setTitle(cmd.getTitle());
@@ -47,12 +48,12 @@ public class BoardController {
 			vo.setDepth(0);
 		}
 		vo.setRegdate(new Timestamp(System.currentTimeMillis()));
-		boardService.insert(vo);
+		boardService.insert(vo, mpReq);
 		return "redirect:/list.board";
 	}
 	
 	@RequestMapping("/list.board")
-	public String searchView(SearchCommand search, Model model) throws Exception{
+	public String listView(SearchCommand search, Model model) throws Exception{
 		Integer pageNum = search.getPageNum();
 		if(pageNum==null) {
 			pageNum = 1;

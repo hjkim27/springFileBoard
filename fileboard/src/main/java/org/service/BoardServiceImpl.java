@@ -2,19 +2,31 @@ package org.service;
 
 import java.util.List;
 
+import org.dao.AttachDao;
 import org.dao.BoardDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.util.FileUtils;
+import org.vo.AttachVo;
 import org.vo.BoardVo;
 
 @Service //로직처리 : 서비스레이어, 내부에서 자바 로직을 처리함
 public class BoardServiceImpl implements BoardService {
 	@Autowired
 	private BoardDao boardDao;
+	@Autowired
+	private FileUtils fileUtils;
+	@Autowired
+	private AttachDao attachDao;
 	
 	@Override
-	public void insert(BoardVo vo) throws Exception {
+	public void insert(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception {
 		boardDao.insert(vo);
+		List<AttachVo> fileList = fileUtils.fileInfo(vo, mpReq);
+		for(int i=0; i<fileList.size(); i++) {
+			attachDao.insert(fileList.get(i));
+		}
 	}
  
 	@Override

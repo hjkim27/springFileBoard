@@ -24,19 +24,21 @@
 			<tr>
 				<td id="head">제목: </td>
 				<td colspan="4">
-					<c:if test="${num==0 }">
-						<input id="inputbox" type="text" name="title" required>
-					</c:if>
-					<c:if test="${num!=0 }">
-						<input id="inputbox" type="text" name="title" placeholder="RE:${detail.title }" required>
-					</c:if>
+					<c:choose>
+						<c:when test="${num eq null}">
+							<input id="inputbox" type="text" name="title" required>
+						</c:when>
+						<c:otherwise>
+							<input id="inputbox" type="text" name="title" placeholder="RE:${detail.title }" required>
+						</c:otherwise>
+					</c:choose>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="4"><textarea style="width: 99%; font-size: 12" rows="20" name="content" required></textarea></td>
 			</tr>
 			<tr>
-			<c:if test="${num==0 }">
+			<c:if test="${num eq null }">
 				<td id="head">첨부파일</td>
 				<td colspan="3"><input id="inputbox" type="file" name="file"></td>
 			</c:if>

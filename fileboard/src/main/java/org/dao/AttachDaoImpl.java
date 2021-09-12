@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Repository;
 import org.vo.AttachVo;
 
+@Repository
 public class AttachDaoImpl implements AttachDao {
 	public SqlSessionTemplate sqlSessionTemplate;
 	

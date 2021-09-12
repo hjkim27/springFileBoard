@@ -6,12 +6,12 @@
 <!-- 스프링이 DB에 쿼리 요청 시 사용하는 메서드가 참조할 sql mapping 파일 정의 -->
 <mapper namespace="attachDao">
 	<insert id="insert" parameterType="attachVo">
-		insert into ATTACH(NUM, FILENAME, BNUM, FILESIZE, CONTENTTYPE) 
-		<if test="num==0">
-		values (ATTACH_SEQ.nextval, #{fileName}, BOARD_SEQ.currval, ${fileSize}, ${contentType})
+		insert into ATTACH(NUM, BNUM, FILENAME, SAVENAME, FILESIZE) 
+		<if test="bNum==0">
+			values (ATTACH_SEQ.nextval, BOARD_SEQ.currval, #{fileName}, #{saveName}, #{fileSize})
 		</if>
-		<if test="num!=0">
-		values (ATTACH_SEQ.nextval, #{fileName}, #{bNum}, #{fileSize}, #{contentType})
+		<if test="bNum!=0">
+			values (ATTACH_SEQ.nextval, #{bNum}, #{fileName}, #{saveName}, #{fileSize})
 		</if>
 		<selectKey keyProperty="num" resultType="Integer">
 			select NVL(max(NUM), 0) from ATTACH

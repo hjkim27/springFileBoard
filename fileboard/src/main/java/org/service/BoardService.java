@@ -2,11 +2,12 @@ package org.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.vo.BoardVo;
 
 public interface BoardService {
 	//게시글 작성
-	public void insert(BoardVo vo) throws Exception;
+	public void insert(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception;
 	
 	// 게시글 목록 조회
 	public List<BoardVo> list(int start, int end) throws Exception;
