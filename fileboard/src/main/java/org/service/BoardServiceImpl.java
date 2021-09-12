@@ -1,6 +1,7 @@
 package org.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.dao.AttachDao;
 import org.dao.BoardDao;
@@ -38,6 +39,7 @@ public class BoardServiceImpl implements BoardService {
 	public int listSize() {
 		return boardDao.boardCount();
 	}
+	
 
 	@Override
 	public List<BoardVo> search(String type, String str, int start, int end) throws Exception {		
@@ -47,6 +49,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int searchSize(String type, String str) {
 		return boardDao.boardCount(type, str);
+	}
+
+	@Override
+	public List<Map<Object, Object>> answerCount() {
+		return boardDao.boardRef();
+	}
+	
+	@Override
+	public List<Map<Object, Object>> fileCount() {
+		return attachDao.countFileList();
 	}
 
 	@Override
@@ -66,6 +78,11 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	public AttachVo fileList(int bNum) throws Exception {
+		return attachDao.files(bNum);
+	}
+	
+	@Override
 	public void edit(BoardVo vo) throws Exception {
 		boardDao.update(vo);
 	}
@@ -73,7 +90,6 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void delete(int num) throws Exception {
 		boardDao.delete(num);
-		
+		attachDao.delete(num);
 	}
-	
 }

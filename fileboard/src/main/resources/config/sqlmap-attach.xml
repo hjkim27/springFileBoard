@@ -17,18 +17,16 @@
 			select NVL(max(NUM), 0) from ATTACH
 		</selectKey>
 	</insert>
-	<update id="update">
-		update ATTACH set FILENAME=#{fileName}, FILESIZE=#{fileSize}, CONTENTTYPE=#{contentType} where BNUM=#{bNum}
-	</update>
+	<select id="countFileList" resultType="hashMap">
+		select BNUM, count(*) filecount from ATTACH group by BNUM
+	</select>
 	<select id="files" parameterType="Integer" resultType="attachVo">
 		select * from ATTACH where BNUM=#{bNum}
 	</select>
-	<select id="countFile" parameterType="Integer" resultType="Integer">
-		select count(*) from ATTACH where BNUM=#{bNum}
-	</select>
-	
-	<select id="countFileList" resultMap="fileListMap">
-		select BNUM, count(*) filecount from ATTACH group by BNUM
-	</select>
-	<resultMap type="HashMap" id="fileListMap"/>
+	<delete id="delete" parameterType="Integer">
+		delete from ATTACH where BNUM=#{num}
+	</delete>	
+	<update id="update">
+		update ATTACH set FILENAME=#{fileName}, SAVENAME=#{saveName}, FILESIZE=#{fileSize} where BNUM=#{bNum}
+	</update>
 </mapper>

@@ -4,34 +4,14 @@ import java.sql.Timestamp;
 
 public class DeleteCommand {
 	private int num;
-	private Timestamp regdate;
-	private String title;
-	private String content;
 	private String password;
 	private String confirmPassword;
+	
 	public int getNum() {
 		return num;
 	}
 	public void setNum(int num) {
 		this.num = num;
-	}
-	public Timestamp getRegdate() {
-		return regdate;
-	}
-	public void setRegdate(Timestamp regdate) {
-		this.regdate = regdate;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
 	}
 	public String getPassword() {
 		return password;
@@ -53,4 +33,5 @@ public class DeleteCommand {
 			return false;
 		}
 	}
+	
 }

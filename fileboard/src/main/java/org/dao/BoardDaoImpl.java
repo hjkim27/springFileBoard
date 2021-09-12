@@ -62,13 +62,13 @@ public class BoardDaoImpl implements BoardDao {
 	}
 
 	public void delete(int num) {
-		sqlSessionTemplate.delete("delete", num);
+		sqlSessionTemplate.delete("deleteBoard", num);
 	}
 	
 
 //	확인 필요
-	public Map<Object, Object> boardRef() {
-		return sqlSessionTemplate.selectMap("boardRef", "ref", "refcount");
+	public List<Map<Object, Object>> boardRef() {
+		return sqlSessionTemplate.selectList("boardRef");
 	}
 
 	

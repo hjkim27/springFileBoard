@@ -53,15 +53,22 @@
 						<c:set var="nbr" value="${vo.ref }"/>
 						<a href="detail.board?num=${vo.num }">
 							${vo.title}
-							<c:if test="${ansCount[nbr]-1 !=0 }">
-								 [<c:out value="${ansCount[nbr]-1 }"/>]
-							</c:if>
+							<c:forEach var="ansCount" items="${answerCount }">
+								<c:if test="${ansCount.REF==vo.num and ansCount.REFCOUNT>1}">
+									 [<c:out value="${ansCount.REFCOUNT-1 }"/>]
+								</c:if>
+							</c:forEach>
 						</a>
 					</td>
 					<td>${vo.writer }</td>
 					<td><fmt:formatDate value="${vo.regdate }" type="both" pattern="yyyy-MM-dd"/></td>
 					<td align="center">
-						<c:out value="${files[vo.num]}"></c:out>
+						<c:forEach var="file" items="${fileCount }">
+							<c:if test="${file.BNUM==vo.num and file.FILECOUNT>0 }">
+								<c:out value="${file.FILECOUNT}"></c:out>
+							</c:if>
+						</c:forEach>
+					
 					</td>
 					<td align="center">${vo.readCount }</td>
 				</tr>

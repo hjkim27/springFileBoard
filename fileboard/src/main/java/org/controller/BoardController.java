@@ -85,14 +85,19 @@ public class BoardController {
 				result = Collections.emptyList();
 			}
 		}
-		int number = count - (currentPage - 1) * pageSize;
-		Map<Object, Object> reCount = new HashMap<Object, Object>();
-		
-		PageCommand pageCmd = new PageCommand(currentPage, start, end, count, pageSize, number);
-		
 		model.addAttribute("list", result);
-		model.addAttribute("cmd", pageCmd);
+
+		int number = count - (currentPage - 1) * pageSize;
 		model.addAttribute("number", number);
+
+		PageCommand pageCmd = new PageCommand(currentPage, start, end, count, pageSize, number);
+		model.addAttribute("cmd", pageCmd);
+
+		List<Map<Object, Object>> answerCount = boardService.answerCount();
+		model.addAttribute("answerCount", answerCount);
+		
+		List<Map<Object, Object>> fileCount = boardService.fileCount();
+		model.addAttribute("fileCount", fileCount);
 		
 		return "list";
 	}
@@ -102,6 +107,7 @@ public class BoardController {
 		int num = vo.getNum();
 		model.addAttribute("detail", boardService.read(num));
 		model.addAttribute("answer", boardService.answer(num));
+		model.addAttribute("files", boardService.fileList(num));
 		boardService.readCount(num);
 		return "detail";
 	}

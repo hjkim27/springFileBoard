@@ -33,5 +33,5 @@ public interface BoardDao {
 	public void delete(int num);
 	
 
-	public Map<Object, Object> boardRef();
+	public List<Map<Object, Object>> boardRef();
 }

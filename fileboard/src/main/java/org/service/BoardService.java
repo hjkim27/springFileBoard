@@ -1,8 +1,10 @@
 package org.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.vo.AttachVo;
 import org.vo.BoardVo;
 
 public interface BoardService {
@@ -17,12 +19,20 @@ public interface BoardService {
 	public List<BoardVo> search(String type, String str, int start, int end) throws Exception;
 	public int searchSize(String type, String str);
 	
+	// 게시글 댓글 갯수 확인
+	public List<Map<Object, Object>> answerCount();
+	// 게시글 첨부파일 갯수 확인
+	public List<Map<Object, Object>> fileCount();
+	
 	//게시글 상세페이지
 	public BoardVo read(int num) throws Exception;
 	// 게시글 상세페이지 답글
 	public List<BoardVo> answer(int num) throws Exception;
 	// 게시글 조회 시 조회수 증가
 	public void readCount(int num) throws Exception;
+	// 게시글 첨부파일 확인
+	public AttachVo fileList(int bNum) throws Exception;
+	
 	
 	// 게시글 수정
 	public void edit(BoardVo vo) throws Exception;
