@@ -7,7 +7,7 @@ import org.vo.BoardVo;
 
 public interface BoardDao {
 	// 게시글 작성
-	public int insert(BoardVo vo) throws Exception;
+	public void insert(BoardVo vo) throws Exception;
 	
 	// 게시글 목록 조회
 	public List<BoardVo> selectAll(int start, int end) throws Exception;
@@ -26,7 +26,10 @@ public interface BoardDao {
 	// 게시글 조회 시 조회수 증가
 	public void hitIt(int num);
 
+	// 게시글 수정
 	public void update(BoardVo vo);
+	
+	// 게시글 삭제
 	public void delete(int num);
 	
 

@@ -5,20 +5,20 @@
 
 <!-- 스프링이 DB에 쿼리 요청 시 사용하는 메서드가 참조할 sql mapping 파일 정의 -->
 <mapper namespace="boardDao">
-	<insert id="insert" parameterType="boardVo">
+	<insert id="insertBoard" parameterType="boardVo">
 		insert into BOARD(NUM, WRITER, TITLE, CONTENT, REGDATE, DEPTH, REF, PASSWORD)
-		<if test="ref!=0">
-		 values (BOARD_SEQ.nextval, #{writer}, #{title}, #{content}, systimestamp, #{depth}, #{ref}, #{password})
+		<if test='ref!=0'>
+		 values (BOARD_SEQ.nextval, #{writer}, #{title}, #{content}, #{regdate}, #{depth}, #{ref}, #{password})
 		</if>
-		<if test="ref==0">
-		 values (BOARD_SEQ.nextval, #{writer}, #{title}, #{content}, systimestamp, #{depth}, BOARD_SEQ.currval, #{password})
+		<if test='ref==0'>
+		 values (BOARD_SEQ.nextval, #{writer}, #{title}, #{content}, #{regdate}, #{depth}, BOARD_SEQ.currval, #{password})
 		</if>
-		 <selectKey keyProperty="num" resultType="Long">
-		 		select NVL(max(ID),0) from BOARD
+		 <selectKey keyProperty="num" resultType="Integer">
+		 		select NVL(max(num),0) from BOARD
 		 </selectKey>
 	</insert>
-	<update id="update" parameterType="boardVo">
-		update BOARD set TITLE=#{title}, CONTENT=#{content}, MODDATE=systimestamp where NUM=#{num}		
+	<update id="updateBoard" parameterType="boardVo">
+		update BOARD set TITLE=#{title}, CONTENT=#{content}, MODDATE=#{moddate} where NUM=#{num}		
 	</update>
 	<delete id="delete" parameterType="Integer">
 		delete from BOARD where NUM=#{num} or REF=#{ref}

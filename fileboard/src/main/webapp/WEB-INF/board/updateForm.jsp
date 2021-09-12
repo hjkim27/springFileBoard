@@ -11,13 +11,13 @@
 		<h4>Update</h4>
 	</div>
 	<div>
-	<form action="update.board" method="post" enctype="multipart/form-data">
+	<form action="update.board?num=${update.num}" method="post" enctype="multipart/form-data">
 		<table border="1" >
 			<tr>
 				<td id="head">작성자: </td>
 				<td>${update.writer }</td>
 				<td id="head">비밀번호: </td>
-				<td><input id="inputbox" type="password" name="password" placeholder="기존 입력한 비밀번호 입력"></td>
+				<td><input id="inputbox" type="password" name="confirmPassword" placeholder="기존 입력한 비밀번호 입력"></td>
 			</tr>
 			<tr>
 				<td id="head">제목: </td>
@@ -35,7 +35,6 @@
 			</c:if>
 		</table>
 		<input type="button" onclick="location.href='list.board'" value="취소">
-		<input type="hidden" value="${update.writer }"/>
 		<input type="submit" value="저장">
 	</form>
 	</div>

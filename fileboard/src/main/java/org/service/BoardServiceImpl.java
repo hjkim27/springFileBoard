@@ -16,7 +16,7 @@ public class BoardServiceImpl implements BoardService {
 	public void insert(BoardVo vo) throws Exception {
 		boardDao.insert(vo);
 	}
-
+ 
 	@Override
 	public List<BoardVo> list(int start, int end) throws Exception {
 		return boardDao.selectAll(start, end);
@@ -50,6 +50,17 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void readCount(int num) throws Exception {
 		boardDao.hitIt(num);
+		
+	}
+
+	@Override
+	public void edit(BoardVo vo) throws Exception {
+		boardDao.update(vo);
+	}
+
+	@Override
+	public void delete(int num) throws Exception {
+		boardDao.delete(num);
 		
 	}
 	

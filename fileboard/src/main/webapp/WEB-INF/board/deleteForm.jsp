@@ -10,7 +10,7 @@
 		<h4>DeleteArticle</h4>
 	</div>
 	<div>
-	<form action="delete.board" method="post">
+	<form action="delete.board?num=${delete.num }" method="post">
 		<table>
 		<caption><b>해당 게시글을 삭제합니다.</b></caption>
 		<tr>
@@ -24,10 +24,11 @@
 		</tr>
 		<tr>
 			<td>비밀번호: </td>
-			<td><input id="inputbox" type="password" name="password" placeholder="게시글 비밀번호 입력" required></td>
+			<td><input id="inputbox" type="password" name="confirmPassword" placeholder="게시글 비밀번호 입력" required></td>
 		</tr>
 		</table>
 		<br>
+		<input type="hidden" name="password" value="${delete.password }">
 		<input type="submit" value="삭제">
 	</form>
 	</div>

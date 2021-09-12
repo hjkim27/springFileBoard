@@ -22,4 +22,10 @@ public interface BoardService {
 	public List<BoardVo> answer(int num) throws Exception;
 	// 게시글 조회 시 조회수 증가
 	public void readCount(int num) throws Exception;
+	
+	// 게시글 수정
+	public void edit(BoardVo vo) throws Exception;
+	
+	// 게시글 삭제
+	public void delete(int num) throws Exception;
 }

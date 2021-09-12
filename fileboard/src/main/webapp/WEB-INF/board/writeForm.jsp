@@ -11,8 +11,9 @@
 	</div>
 	<div>
 	<form action="write.board" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="ref" value=${num }>
-		<input type="hidden" name="depth" value=${depth }>
+	<c:if test="${num!=0 }">
+		<input type="hidden" name="num" value="${num }">
+	</c:if>
 		<table border="1" >
 			<tr>
 				<td id="head">작성자: </td>

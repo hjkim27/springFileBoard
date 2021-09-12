@@ -1,6 +1,6 @@
 package common;
 
-public class pageCommand {
+public class PageCommand {
 	private int currentPage;
 	private int start;
 	private int end;
@@ -8,7 +8,7 @@ public class pageCommand {
 	private int pageSize;
 	private int number;
 	
-	public pageCommand(int currentPage, int start, int end, int count, int pageSize, int number) {
+	public PageCommand(int currentPage, int start, int end, int count, int pageSize, int number) {
 		super();
 		this.currentPage = currentPage;
 		this.start = start;

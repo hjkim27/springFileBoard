@@ -16,9 +16,8 @@
 	</div>
 	<div>
 	<table>
-		<form action="write.board"  method="get">
-		<input type="hidden" name="num" value=${num }>
-		<input type="hidden" name="ref" value=${detail.ref }>
+		<form action="writeForm.board"  method="get">
+		<input type="hidden" name="num" value=${detail.num }>
 		<input type="hidden" name="depth" value=${detail.depth }>
 			<tr>
 				<td colspan="4" align="center"><h2><b>${detail.title }</b></h2></td>
@@ -43,14 +42,8 @@
 			<input type="submit" value="답글달기">
 		</form>
 		<input type="button" onclick="location.href='list.board'" value="목록">
-		<form action="delete.board" method="get">
-			<input type="hidden" name="num" value="${num }">
-			<input type="submit" value="삭제">
-		</form>	
-		<form action="update.board" method="get">
-			<input type="hidden" name="num" value="${num }">
-			<input type="submit" value="수정">
-		</form>
+		<input type="button" onclick="location.href='deleteForm.board?num=${detail.num}'" value="삭제">
+		<input type="button" onclick="location.href='updateForm.board?num=${detail.num}'" value="수정">
 	</table>
 		<br>
 	<br>

@@ -16,8 +16,8 @@ public class BoardDaoImpl implements BoardDao {
 		this.sqlSessionTemplate = sqlSessionTemplate;
 	}
 	
-	public int insert(BoardVo vo) {
-		return sqlSessionTemplate.insert("insert", vo);
+	public void insert(BoardVo vo) {
+		sqlSessionTemplate.insert("insertBoard", vo);
 	}
 
 	public List<BoardVo> selectAll(int start, int end) {
@@ -57,11 +57,8 @@ public class BoardDaoImpl implements BoardDao {
 		sqlSessionTemplate.update("hitIt", num);
 	}
 
-	
-	
-	
 	public void update(BoardVo vo) {
-		sqlSessionTemplate.update("update", vo);
+		sqlSessionTemplate.update("updateBoard", vo);
 	}
 
 	public void delete(int num) {

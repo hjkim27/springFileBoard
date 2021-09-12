@@ -52,7 +52,7 @@
 					</td>
 					<td>
 						<c:set var="nbr" value="${vo.ref }"/>
-						<a href="detail.board?num=${vo.num }&pageNum=${currentPage }">
+						<a href="detail.board?num=${vo.num }">
 							${vo.title}
 							<c:if test="${ansCount[nbr]-1 !=0 }">
 								 [<c:out value="${ansCount[nbr]-1 }"/>]
