@@ -97,4 +97,13 @@ public class BoardController {
 		
 		return "search";
 	}
+	
+	@RequestMapping("/detail.board")
+	public String read(BoardVo vo, Model model) throws Exception{
+		int num = vo.getNum();
+		model.addAttribute("detail", boardService.read(num));
+		boardService.readCount(num);
+		model.addAttribute("answer", boardService.answer(num));
+		return "detail";
+	}
 }

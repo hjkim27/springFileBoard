@@ -36,5 +36,21 @@ public class BoardServiceImpl implements BoardService {
 	public int searchSize(String type, String str) {
 		return boardDao.boardCount(type, str);
 	}
+
+	@Override
+	public BoardVo read(int num) throws Exception {
+		return boardDao.detail(num);
+	}
+
+	@Override
+	public List<BoardVo> answer(int num) throws Exception {
+		return boardDao.detailAnswer(num);
+	}
+
+	@Override
+	public void readCount(int num) throws Exception {
+		boardDao.hitIt(num);
+		
+	}
 	
 }

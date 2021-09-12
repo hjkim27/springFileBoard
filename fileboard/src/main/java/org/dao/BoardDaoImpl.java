@@ -20,21 +20,16 @@ public class BoardDaoImpl implements BoardDao {
 		return sqlSessionTemplate.insert("insert", vo);
 	}
 
-	public void update(BoardVo vo) {
-		sqlSessionTemplate.update("update", vo);
-	}
-
-	public void delete(int num) {
-		sqlSessionTemplate.delete("delete", num);
-	}
-
 	public List<BoardVo> selectAll(int start, int end) {
 		HashMap<String, Integer> hs = new HashMap<String, Integer>();
 		hs.put("start", start);
 		hs.put("end", end);
 		return sqlSessionTemplate.selectList("selectAll", hs);
 	}
-
+	public int boardCount() {
+		return sqlSessionTemplate.selectOne("boardCount");
+	}
+	
 	public List<BoardVo> search(String type, String str, int start, int end) {
 		HashMap<String, Object> hs = new HashMap<String, Object>();
 		hs.put("type", type);
@@ -43,34 +38,43 @@ public class BoardDaoImpl implements BoardDao {
 		hs.put("end", end);
 		return sqlSessionTemplate.selectList("search", hs);		
 	}
-
-	public BoardVo detail(int num) {
-		return sqlSessionTemplate.selectOne("detail", num);
-	}
-
-	public List<BoardVo> detailAnswer(int num) {
-		return sqlSessionTemplate.selectList("detailAnswer", num);
-	}
-	
-	public void hitIt(int num) {
-		sqlSessionTemplate.update("hitIt", num);
-	}
-
-//	확인 필요
-	public Map<Object, Object> boardRef() {
-		return sqlSessionTemplate.selectMap("boardRef", "ref", "refcount");
-	}
-
-	public int boardCount() {
-		return sqlSessionTemplate.selectOne("boardCount");
-	}
-	
 	public int boardCount(String type, String str) {
 		HashMap<String, String> hs = new HashMap<String, String>();
 		hs.put("type", type);
 		hs.put("str", str);
 		return sqlSessionTemplate.selectOne("searchBoardCount", hs);
 	}
+	
+	public BoardVo detail(int num) {
+		return sqlSessionTemplate.selectOne("detail", num);
+	}
+	
+	public List<BoardVo> detailAnswer(int num) {
+		return sqlSessionTemplate.selectList("detailAnswer", num);
+	}
+
+	public void hitIt(int num) {
+		sqlSessionTemplate.update("hitIt", num);
+	}
+
+	
+	
+	
+	public void update(BoardVo vo) {
+		sqlSessionTemplate.update("update", vo);
+	}
+
+	public void delete(int num) {
+		sqlSessionTemplate.delete("delete", num);
+	}
+	
+
+//	확인 필요
+	public Map<Object, Object> boardRef() {
+		return sqlSessionTemplate.selectMap("boardRef", "ref", "refcount");
+	}
+
+	
 
 
 }
