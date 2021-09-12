@@ -2,7 +2,6 @@ package org.controller;
 
 import java.sql.Timestamp;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,11 +9,9 @@ import java.util.Map;
 import org.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.vo.BoardVo;
 
 import common.SearchCommand;
@@ -32,14 +29,12 @@ public class BoardController {
 	public String WriteView(Integer num, Model model) throws Exception {
 		if(num!=null && num!=0) {
 			model.addAttribute("num", num);
-			System.out.println(num);
 		}
 		return "writeForm";
 	}
 
 	@RequestMapping(value = "/write.board", method = RequestMethod.POST)
 	public String write(RegistCommand cmd) throws Exception {
-		System.out.println(cmd);
 		BoardVo vo = new BoardVo();
 		vo.setWriter(cmd.getWriter());
 		vo.setTitle(cmd.getTitle());
@@ -52,42 +47,11 @@ public class BoardController {
 			vo.setDepth(0);
 		}
 		vo.setRegdate(new Timestamp(System.currentTimeMillis()));
-		System.out.println(vo);
 		boardService.insert(vo);
 		return "redirect:/list.board";
 	}
-
-	@RequestMapping(value = "/list.board")
-	public String listView(Integer pageNum, Model model) throws Exception {
-		if (pageNum == null) {
-			pageNum = 1;
-		}
-		int pageSize = 10;
-		int currentPage = pageNum;
-		int start = (currentPage - 1) * pageSize + 1;
-		int end = currentPage * pageSize;
-		Integer count = boardService.listSize();
-		int number = 0;
-
-		List<BoardVo> result = null;
-		if (count > 0) {
-			result = boardService.list(start, end);
-		} else {
-			result = Collections.emptyList();
-		}
-
-		number = count - (currentPage - 1) * pageSize;
-		Map<Object, Object> reCount = new HashMap<Object, Object>();
-		
-		PageCommand cmd = new PageCommand(currentPage, start, end, count, pageSize, number);
-		
-		model.addAttribute("list", result);
-		model.addAttribute("cmd", cmd);
-		model.addAttribute("number", number);
-		return "list";
-	}
 	
-	@RequestMapping("/search.board")
+	@RequestMapping("/list.board")
 	public String searchView(SearchCommand search, Model model) throws Exception{
 		Integer pageNum = search.getPageNum();
 		if(pageNum==null) {
@@ -97,42 +61,52 @@ public class BoardController {
 		int currentPage = pageNum;
 		int start = (currentPage - 1) * pageSize + 1;
 		int end = currentPage * pageSize;
-		String type = search.getType();
-		String str = search.getStr();
-		Integer count = boardService.searchSize(type, str);
-		int number = 0;
-		
+		String type = null;
+		String str = null;
+		Integer count = null;
 		List<BoardVo> result = null;
-		if (count > 0) {
-			result = boardService.search(type, str, start, end);
-		} else {
-			result = Collections.emptyList();
-		}
 
-		number = count - (currentPage - 1) * pageSize;
+		if(search.getStr()!=null) {
+			type = search.getType();
+			str = search.getStr();
+			count = boardService.searchSize(type, str);
+			if(count>0) {
+				result = boardService.search(type, str, start, end);
+				model.addAttribute("op", search);
+			} else {
+				result = Collections.emptyList();
+			}
+		} else {
+			count = boardService.listSize();
+			if(count>0) {
+				result = boardService.list(start, end);
+			}else {
+				result = Collections.emptyList();
+			}
+		}
+		int number = count - (currentPage - 1) * pageSize;
 		Map<Object, Object> reCount = new HashMap<Object, Object>();
 		
 		PageCommand pageCmd = new PageCommand(currentPage, start, end, count, pageSize, number);
 		
-		model.addAttribute("search", result);
+		model.addAttribute("list", result);
 		model.addAttribute("cmd", pageCmd);
 		model.addAttribute("number", number);
 		
-		return "search";
+		return "list";
 	}
 	
 	@RequestMapping(value = "/detail.board")
 	public String read(BoardVo vo, Model model) throws Exception{
 		int num = vo.getNum();
 		model.addAttribute("detail", boardService.read(num));
-		boardService.readCount(num);
 		model.addAttribute("answer", boardService.answer(num));
+		boardService.readCount(num);
 		return "detail";
 	}
 	
 	@RequestMapping(value = "/updateForm.board")
 	public String updateView(BoardVo vo, Model model) throws Exception{
-		System.out.println(vo.getNum());
 		model.addAttribute("update", boardService.read(vo.getNum()));
 		return "updateForm";
 	}
@@ -144,7 +118,6 @@ public class BoardController {
 		vo.setTitle(cmd.getTitle());
 		vo.setContent(cmd.getContent());
 		vo.setModdate(new Timestamp(System.currentTimeMillis()));
-		System.out.println(vo);
 		boardService.edit(vo);
 		return "redirect:/detail.board?num="+cmd.getNum();
 	}

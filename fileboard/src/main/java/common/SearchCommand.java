@@ -4,6 +4,7 @@ public class SearchCommand {
 	private Integer pageNum;
 	private String type;
 	private String str;
+	
 	public Integer getPageNum() {
 		return pageNum;
 	}

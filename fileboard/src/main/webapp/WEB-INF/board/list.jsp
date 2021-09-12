@@ -14,27 +14,26 @@
 		<h4>BoardList</h4>
 	</div>
 	<div>
-	<form action="search.board">
+	<form action="list.board">
 	<table>
 		<tr>
 			<td style="width: 15%">
 				<select id="searchSelect" name="type">
-					<option value="Writer">작성자</option>
-					<option value="Title">제목</option>
+					<option value="writer">작성자</option>
+					<c:choose>
+						<c:when test="${op.str ne '' && op.type eq 'title'}"><option value="title" selected>제목</option></c:when>
+						<c:otherwise><option value="title">제목</option></c:otherwise>
+					</c:choose>
 				</select>
 			</td>
 			<td style="width: 70%">
-				<input id="search" type="text" name="str" placeholder="검색내용">
+				<input id="search" type="text" name="str" placeholder="<c:if test='${op.str!=null}'>${op.str }</c:if>">
 			</td>
 			<td style="width: 15%">
 				<input id="search" type="submit" value="검색">
 			</td>
 		</tr>
 	</table>
-	</form>
-	</div>
-	<div>
-	<form action="writeForm.board" method="get">
 		<table>
 			<tr style="background:#FCD8D4; text-align: center;">
 				<th id="num">번호</th>
@@ -84,18 +83,27 @@
 			<c:if test="${endPage>pageCount }">
 				<c:set var="endPage" value="${pageCount }"/>
 			</c:if>
+			<c:choose>
+				<c:when test="${op!=null}">
+					<c:set var="options" value="type=${op.type}&str=${op.str}&"></c:set>
+				</c:when>
+				<c:otherwise>
+					<c:set var="options" value=""></c:set>
+				</c:otherwise>
+			</c:choose>
+			
 			<c:if test="${startPage>pageBlock }">
-				<a href="list.board?pageNum=${startPage-pageBlock }">[이전]</a>
+				<a href="list.board?${options}pageNum=${startPage-pageBlock }">[이전]</a>
 			</c:if>
 			<c:forEach var="i" begin="${startPage }" end="${endPage }">
-				<a href="list.board?pageNum=${i }">[${i }]</a>
+				<a href="list.board?${options}pageNum=${i }">[${i }]</a>
 			</c:forEach>
 			<c:if test="${endPage<pageCount }">
-				<a href="list.board?pageNum=${startPage+pageBlock }">[다음]</a>
+				<a href="list.board?${options}pageNum=${startPage+pageBlock }">[다음]</a>
 			</c:if>
 		
 		</c:if>
-		<input type="submit" value="글쓰기">
+		<input type="button" onclick="location.href='writeForm.board'" value="글쓰기">
 	</form>
 	</div>
 </article>
