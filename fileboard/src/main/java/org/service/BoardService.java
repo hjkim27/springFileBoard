@@ -31,11 +31,12 @@ public interface BoardService {
 	// 게시글 조회 시 조회수 증가
 	public void readCount(int num) throws Exception;
 	// 게시글 첨부파일 확인
-	public AttachVo fileList(int bNum) throws Exception;
-	
+	public List<Map<Object, Object>> fileList(int bNum) throws Exception;
+	// 게시글 첨부파일 다운로드
+	public Map<String, Object> downFile(int num) throws Exception;
 	
 	// 게시글 수정
-	public void edit(BoardVo vo) throws Exception;
+	public void edit(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception;
 	
 	// 게시글 삭제
 	public void delete(int num) throws Exception;

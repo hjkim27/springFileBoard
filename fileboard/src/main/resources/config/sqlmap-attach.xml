@@ -6,12 +6,12 @@
 <!-- 스프링이 DB에 쿼리 요청 시 사용하는 메서드가 참조할 sql mapping 파일 정의 -->
 <mapper namespace="attachDao">
 	<insert id="insert" parameterType="attachVo">
-		insert into ATTACH(NUM, BNUM, FILENAME, SAVENAME, FILESIZE) 
+		insert into ATTACH(NUM, BNUM, FILENAME, SAVENAME, FILESIZE, REGDATE) 
 		<if test="bNum==0">
-			values (ATTACH_SEQ.nextval, BOARD_SEQ.currval, #{fileName}, #{saveName}, #{fileSize})
+			values (ATTACH_SEQ.nextval, BOARD_SEQ.currval, #{fileName}, #{saveName}, #{fileSize}, #{regdate})
 		</if>
 		<if test="bNum!=0">
-			values (ATTACH_SEQ.nextval, #{bNum}, #{fileName}, #{saveName}, #{fileSize})
+			values (ATTACH_SEQ.nextval, #{bNum}, #{fileName}, #{saveName}, #{fileSize}, #{regdate})
 		</if>
 		<selectKey keyProperty="num" resultType="Integer">
 			select NVL(max(NUM), 0) from ATTACH
@@ -20,9 +20,14 @@
 	<select id="countFileList" resultType="hashMap">
 		select BNUM, count(*) filecount from ATTACH group by BNUM
 	</select>
-	<select id="files" parameterType="Integer" resultType="attachVo">
+	<select id="files" parameterType="Integer" resultType="hashMap">
 		select * from ATTACH where BNUM=#{bNum}
 	</select>
+	<select id="downFile" parameterType="Integer" resultType="hashMap">
+		select FILENAME, SAVENAME, REGDATE from ATTACH where NUM=#{num}
+	</select>
+	
+	
 	<delete id="delete" parameterType="Integer">
 		delete from ATTACH where BNUM=#{num}
 	</delete>	

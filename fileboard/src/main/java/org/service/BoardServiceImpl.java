@@ -21,13 +21,17 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	private AttachDao attachDao;
 	
-	@Override
-	public void insert(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception {
-		boardDao.insert(vo);
+	private void fileInsert(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception {
 		List<AttachVo> fileList = fileUtils.fileInfo(vo, mpReq);
 		for(int i=0; i<fileList.size(); i++) {
 			attachDao.insert(fileList.get(i));
 		}
+	}
+	
+	@Override
+	public void insert(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception {
+		boardDao.insert(vo);
+		fileInsert(vo, mpReq);
 	}
  
 	@Override
@@ -78,13 +82,19 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public AttachVo fileList(int bNum) throws Exception {
+	public List<Map<Object, Object>> fileList(int bNum) throws Exception {
 		return attachDao.files(bNum);
 	}
 	
 	@Override
-	public void edit(BoardVo vo) throws Exception {
+	public Map<String, Object> downFile(int num) throws Exception {
+		return attachDao.downFile(num);
+	}
+	
+	@Override
+	public void edit(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception {
 		boardDao.update(vo);
+		fileInsert(vo, mpReq);
 	}
 
 	@Override

@@ -12,8 +12,11 @@ public interface AttachDao {
 	// 게시글 리스트에서 첨부파일 갯수 확인
 	public List<Map<Object, Object>> countFileList();
 
-	// 게시글 첨부파일 목록 확인
-	public AttachVo files(int bNum);
+	// 게시글 첨부파일 조회
+	public List<Map<Object, Object>> files(int bNum);
+	
+	// 게시글 첨부파일 다운로드
+	public Map<String, Object> downFile(int num) throws Exception;
 	
 	// 첨부파일 삭제
 	public void delete(int num);

@@ -36,7 +36,11 @@
 			<tr>
 				<td>첨부파일</td>
 				<td colspan="3">
-					<a href="<c:url value="/download"/>?fileName=${files.fileName}&fileSize=${files.fileSize}">${files.fileName}</a>
+					<c:forEach var="file" items="${files}">
+						<a href="<c:url value="/download"/>?num=${file.NUM}">
+							${file.FILENAME }
+						</a>
+					</c:forEach>
 				</td>
 			</tr>
 			<input type="submit" value="답글달기">

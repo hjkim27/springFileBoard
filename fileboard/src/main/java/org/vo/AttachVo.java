@@ -1,14 +1,12 @@
 package org.vo;
 
-import java.sql.Date;
-
 public class AttachVo {
 	private int num;
 	private int bNum;
 	private String fileName;
 	private String saveName;
 	private long fileSize;
-	private Date regdate;
+	private String regdate;
 	public int getNum() {
 		return num;
 	}
@@ -39,10 +37,10 @@ public class AttachVo {
 	public void setFileSize(long fileSize) {
 		this.fileSize = fileSize;
 	}
-	public Date getRegdate() {
+	public String getRegdate() {
 		return regdate;
 	}
-	public void setRegdate(Date regdate) {
+	public void setRegdate(String regdate) {
 		this.regdate = regdate;
 	}
 	

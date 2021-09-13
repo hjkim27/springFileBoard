@@ -24,8 +24,12 @@ public class AttachDaoImpl implements AttachDao {
 		return sqlSessionTemplate.selectList("countFileList");
 	}
 
-	public AttachVo files(int bNum) {
-		return sqlSessionTemplate.selectOne("files", bNum);
+	public List<Map<Object, Object>> files(int bNum) {
+		return sqlSessionTemplate.selectList("files", bNum);
+	}
+
+	public Map<String, Object> downFile(int num) throws Exception {
+		return sqlSessionTemplate.selectOne("downFile", num);
 	}
 
 	public void delete(int num) {
@@ -35,4 +39,5 @@ public class AttachDaoImpl implements AttachDao {
 	public void update(AttachVo vo) {
 		sqlSessionTemplate.update("update", vo);
 	}
+
 }

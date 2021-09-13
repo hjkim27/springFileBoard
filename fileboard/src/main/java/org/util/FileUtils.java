@@ -48,12 +48,15 @@ public class FileUtils {
 				fileSize = multipartFile.getSize();
 				File file = new File(uploadPath+saveName);
 				multipartFile.transferTo(file);				
-				if(vo.getRef()!=0) {
-					attach.setbNum(vo.getRef());
+				if(vo.getNum()!=0) {
+					attach.setbNum(vo.getNum());
 				}
 				attach.setFileName(fileName);
 				attach.setSaveName(saveName);
 				attach.setFileSize(fileSize);
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+				attach.setRegdate(sdf.format(new Date()).toString());
 				list.add(attach);
 			}
 		}
