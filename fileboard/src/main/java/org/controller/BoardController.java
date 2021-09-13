@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.vo.BoardVo;
 
@@ -147,17 +148,24 @@ public class BoardController {
 	@RequestMapping(value = "/updateForm.board")
 	public String updateView(BoardVo vo, Model model) throws Exception {
 		model.addAttribute("update", boardService.read(vo.getNum()));
+		model.addAttribute("files", boardService.fileList(vo.getNum()));
 		return "updateForm";
 	}
 
 	@RequestMapping(value = "/update.board", method = RequestMethod.POST)
-	public String update(UpdateCommand cmd, MultipartHttpServletRequest mpReq) throws Exception {
+	public String update(UpdateCommand cmd,
+						MultipartHttpServletRequest mpReq) throws Exception {
 		BoardVo vo = new BoardVo();
 		vo.setNum(cmd.getNum());
 		vo.setTitle(cmd.getTitle());
 		vo.setContent(cmd.getContent());
 		vo.setModdate(new Timestamp(System.currentTimeMillis()));
 		boardService.edit(vo, mpReq);
+		if(cmd.getDeleteNum()!=null && cmd.getDeleteNum().length!=0) {
+			for(int i:cmd.getDeleteNum()) {
+				boardService.delete("num", i);
+			}
+		}
 		return "redirect:/detail.board?num=" + cmd.getNum();
 	}
 
@@ -170,7 +178,7 @@ public class BoardController {
 	@RequestMapping(value = "/delete.board", method = RequestMethod.POST)
 	public String delete(DeleteCommand cmd) throws Exception {
 		if (cmd.checkPassword()) {
-			boardService.delete(cmd.getNum());
+			boardService.delete("bNum", cmd.getNum());
 		}
 		return "redirect:/list.board";
 	}

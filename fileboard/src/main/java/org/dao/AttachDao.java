@@ -7,7 +7,7 @@ import org.vo.AttachVo;
 
 public interface AttachDao {
 	// 첨부파일 추가
-	public int insert(AttachVo vo);
+	public int insert(Map<String, Object> map);
 	
 	// 게시글 리스트에서 첨부파일 갯수 확인
 	public List<Map<Object, Object>> countFileList();
@@ -18,9 +18,6 @@ public interface AttachDao {
 	// 게시글 첨부파일 다운로드
 	public Map<String, Object> downFile(int num) throws Exception;
 	
-	// 첨부파일 삭제
-	public void delete(int num);
-	
-	// 첨부파일 수정
-	public void update(AttachVo vo);
+	// 첨부파일 삭제처리
+	public void delete(String type, int num) throws Exception;
 }

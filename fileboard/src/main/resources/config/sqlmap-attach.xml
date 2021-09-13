@@ -7,12 +7,14 @@
 <mapper namespace="attachDao">
 	<insert id="insert" parameterType="attachVo">
 		insert into ATTACH(NUM, BNUM, FILENAME, SAVENAME, FILESIZE, REGDATE) 
+		values (ATTACH_SEQ.nextval, 
 		<if test="bNum==0">
-			values (ATTACH_SEQ.nextval, BOARD_SEQ.currval, #{fileName}, #{saveName}, #{fileSize}, #{regdate})
+			BOARD_SEQ.currval, 
 		</if>
 		<if test="bNum!=0">
-			values (ATTACH_SEQ.nextval, #{bNum}, #{fileName}, #{saveName}, #{fileSize}, #{regdate})
+			#{bNum}, 
 		</if>
+			#{fileName}, #{saveName}, #{fileSize}, #{regdate})
 		<selectKey keyProperty="num" resultType="Integer">
 			select NVL(max(NUM), 0) from ATTACH
 		</selectKey>
@@ -21,17 +23,12 @@
 		select BNUM, count(*) filecount from ATTACH group by BNUM
 	</select>
 	<select id="files" parameterType="Integer" resultType="hashMap">
-		select * from ATTACH where BNUM=#{bNum}
+		select NUM, BNUM, FILENAME, round(FILESIZE/1024,1) filesize from ATTACH where BNUM=#{bNum} order by NUM
 	</select>
 	<select id="downFile" parameterType="Integer" resultType="hashMap">
 		select FILENAME, SAVENAME, REGDATE from ATTACH where NUM=#{num}
 	</select>
-	
-	
-	<delete id="delete" parameterType="Integer">
-		delete from ATTACH where BNUM=#{num}
-	</delete>	
-	<update id="update">
-		update ATTACH set FILENAME=#{fileName}, SAVENAME=#{saveName}, FILESIZE=#{fileSize} where BNUM=#{bNum}
-	</update>
+	<delete id="delete" parameterType="hashMap">
+		delete from ATTACH where ${type}=#{num}
+	</delete>
 </mapper>

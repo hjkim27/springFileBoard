@@ -37,9 +37,7 @@
 				<td>첨부파일</td>
 				<td colspan="3">
 					<c:forEach var="file" items="${files}">
-						<a href="<c:url value="/download"/>?num=${file.NUM}">
-							${file.FILENAME }
-						</a>
+						<a href="<c:url value="/download"/>?num=${file.NUM}"> ${file.FILENAME } </a>(${file.FILESIZE}) <br>
 					</c:forEach>
 				</td>
 			</tr>

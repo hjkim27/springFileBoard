@@ -29,8 +29,10 @@
 			<c:if test="${update.num eq update.ref}">
 				<td id="head">첨부파일</td>
 				<td colspan="3">
-					기존 파일 : ${files.fileName } <br>
-					<input id="inputbox" type="file" name="file">
+					<c:forEach var="file" items="${files}">
+						<label><input type="checkbox" name="deleteNum" value="${file.NUM}">${file.FILENAME}</label><br>
+					</c:forEach>
+					<input id="inputbox" type="file" name="files" multiple="multiple">
 				</td>
 			</c:if>
 		</table>

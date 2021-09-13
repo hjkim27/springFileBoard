@@ -12,7 +12,7 @@ import org.util.FileUtils;
 import org.vo.AttachVo;
 import org.vo.BoardVo;
 
-@Service //로직처리 : 서비스레이어, 내부에서 자바 로직을 처리함
+@Service // 로직처리 : 서비스레이어, 내부에서 자바 로직을 처리함
 public class BoardServiceImpl implements BoardService {
 	@Autowired
 	private BoardDao boardDao;
@@ -20,20 +20,16 @@ public class BoardServiceImpl implements BoardService {
 	private FileUtils fileUtils;
 	@Autowired
 	private AttachDao attachDao;
-	
-	private void fileInsert(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception {
-		List<AttachVo> fileList = fileUtils.fileInfo(vo, mpReq);
-		for(int i=0; i<fileList.size(); i++) {
-			attachDao.insert(fileList.get(i));
-		}
-	}
-	
+
 	@Override
 	public void insert(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception {
 		boardDao.insert(vo);
-		fileInsert(vo, mpReq);
+		List<Map<String, Object>> fileList = fileUtils.fileInfo(vo, mpReq);
+		for (int i = 0; i < fileList.size(); i++) {
+			attachDao.insert(fileList.get(i));
+		}
 	}
- 
+
 	@Override
 	public List<BoardVo> list(int start, int end) throws Exception {
 		return boardDao.selectAll(start, end);
@@ -43,10 +39,9 @@ public class BoardServiceImpl implements BoardService {
 	public int listSize() {
 		return boardDao.boardCount();
 	}
-	
 
 	@Override
-	public List<BoardVo> search(String type, String str, int start, int end) throws Exception {		
+	public List<BoardVo> search(String type, String str, int start, int end) throws Exception {
 		return boardDao.search(type, str, start, end);
 	}
 
@@ -59,7 +54,7 @@ public class BoardServiceImpl implements BoardService {
 	public List<Map<Object, Object>> answerCount() {
 		return boardDao.boardRef();
 	}
-	
+
 	@Override
 	public List<Map<Object, Object>> fileCount() {
 		return attachDao.countFileList();
@@ -78,28 +73,33 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void readCount(int num) throws Exception {
 		boardDao.hitIt(num);
-		
+
 	}
 
 	@Override
 	public List<Map<Object, Object>> fileList(int bNum) throws Exception {
 		return attachDao.files(bNum);
 	}
-	
+
 	@Override
 	public Map<String, Object> downFile(int num) throws Exception {
 		return attachDao.downFile(num);
 	}
-	
+
 	@Override
 	public void edit(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception {
 		boardDao.update(vo);
-		fileInsert(vo, mpReq);
+		List<Map<String, Object>> fileList = fileUtils.fileInfo(vo, mpReq);
+		for (int i = 0; i < fileList.size(); i++) {
+			attachDao.insert(fileList.get(i));
+		}
 	}
 
 	@Override
-	public void delete(int num) throws Exception {
-		boardDao.delete(num);
-		attachDao.delete(num);
+	public void delete(String type, int num) throws Exception {
+		if(type.equals("article")) {
+			boardDao.delete(num);
+		}
+		attachDao.delete(type, num);
 	}
 }

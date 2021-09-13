@@ -7,6 +7,7 @@ public class AttachVo {
 	private String saveName;
 	private long fileSize;
 	private String regdate;
+	
 	public int getNum() {
 		return num;
 	}
@@ -43,6 +44,5 @@ public class AttachVo {
 	public void setRegdate(String regdate) {
 		this.regdate = regdate;
 	}
-	
 	
 }

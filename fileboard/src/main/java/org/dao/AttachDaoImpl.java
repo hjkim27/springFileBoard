@@ -16,8 +16,8 @@ public class AttachDaoImpl implements AttachDao {
 		this.sqlSessionTemplate = sqlSessionTemplate;
 	}
 	
-	public int insert(AttachVo vo) {
-		return sqlSessionTemplate.insert("insert", vo);
+	public int insert(Map<String, Object> map) {
+		return sqlSessionTemplate.insert("insert", map);
 	}
 
 	public List<Map<Object, Object>> countFileList() {
@@ -32,12 +32,11 @@ public class AttachDaoImpl implements AttachDao {
 		return sqlSessionTemplate.selectOne("downFile", num);
 	}
 
-	public void delete(int num) {
-		sqlSessionTemplate.delete("delete", num);
-	}
-
-	public void update(AttachVo vo) {
-		sqlSessionTemplate.update("update", vo);
+	public void delete(String type, int num) throws Exception {
+		Map<String, Object> hs = new HashMap<String, Object>();
+		hs.put("type", type);
+		hs.put("num", num);
+		sqlSessionTemplate.delete("delete", hs);
 	}
 
 }

@@ -4,8 +4,10 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -16,18 +18,19 @@ import org.vo.BoardVo;
 
 @Component("fileUtils")
 public class FileUtils {
-	private String uploadPath = "C:\\uploadfiletest\\upload\\" ;
+	private String uploadPath = "C:\\uploadfiletest\\upload\\";
 	private File uploadDir;
-	
+
 	public FileUtils() {
 		uploadDir = new File(uploadPath);
-		if(!uploadDir.exists()) {
+		if (!uploadDir.exists()) {
 			uploadDir.mkdir();
 		}
 	}
-	
-	public List<AttachVo> fileInfo(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception{
-		Iterator<String> it = mpReq.getFileNames();
+
+	// 파일 추가(저장)
+	public List<Map<String, Object>> fileInfo(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception {
+		List<MultipartFile> files = mpReq.getFiles("files");
 		
 		MultipartFile multipartFile = null;
 		String fileName = null;
@@ -35,48 +38,48 @@ public class FileUtils {
 		String saveName = null;
 		long fileSize = 0;
 		
-		List<AttachVo> list = new ArrayList<AttachVo>();
-		AttachVo attach = new AttachVo();
+		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+		Map<String, Object> hs = null;
 		
-		while(it.hasNext()) {
-			multipartFile = mpReq.getFile(it.next());
-			if(!multipartFile.isEmpty()) {
-				uploadPath += calcPath(uploadPath);
-				fileName = multipartFile.getOriginalFilename();
-				UUID uuid = UUID.randomUUID();
-				saveName = uuid.toString()+"_"+fileName;
-				fileSize = multipartFile.getSize();
-				File file = new File(uploadPath+saveName);
-				multipartFile.transferTo(file);				
-				if(vo.getNum()!=0) {
-					attach.setbNum(vo.getNum());
-				}
-				attach.setFileName(fileName);
-				attach.setSaveName(saveName);
-				attach.setFileSize(fileSize);
-				
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-				attach.setRegdate(sdf.format(new Date()).toString());
-				list.add(attach);
+		for (MultipartFile partFile : files) {
+			hs = new HashMap<String, Object>();
+			uploadPath += calcPath(uploadPath);
+			fileName = partFile.getOriginalFilename();
+			UUID uuid = UUID.randomUUID();
+			saveName = uuid.toString()+"_"+fileName;
+			fileSize = partFile.getSize();
+			File file = new File(uploadPath+saveName);
+			partFile.transferTo(file);
+			
+			if(vo.getNum()!=0) {
+				hs.put("bNum", vo.getNum());
 			}
+			hs.put("fileName", fileName);
+			hs.put("saveName", saveName);
+			hs.put("fileSize", fileSize);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			hs.put("regdate", sdf.format(new Date()).toString());
+			hs.put("delCk", "N");
+			list.add(hs);
 		}
+
 		return list;
 	}
 
 	private static String calcPath(String uploadPath) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date today = new Date();
-		String datePath = sdf.format(today)+"\\";
+		String datePath = sdf.format(today) + "\\";
 		mkDir(uploadPath, datePath);
 		return datePath;
 	}
 
 	private static void mkDir(String uploadPath, String datePath) {
-		if(new File(uploadPath+datePath).exists()) {
+		if (new File(uploadPath + datePath).exists()) {
 			return;
 		}
-		File dirPath = new File(uploadPath+datePath);
-		if(!dirPath.exists()) {
+		File dirPath = new File(uploadPath + datePath);
+		if (!dirPath.exists()) {
 			dirPath.mkdir();
 		}
 	}

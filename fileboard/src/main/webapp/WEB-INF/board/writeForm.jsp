@@ -4,6 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
    
 <jsp:include page="boardHeader.jsp" flush="false"/>
+
 	
 <article>
 	<div>
@@ -40,7 +41,7 @@
 			<tr>
 			<c:if test="${num eq null }">
 				<td id="head">첨부파일</td>
-				<td colspan="3"><input id="inputbox" type="file" name="file"></td>
+				<td colspan="3"><input id="inputbox" type="file" name="files" multiple="multiple"></td>
 			</c:if>
 			</tr>
 		</table>
