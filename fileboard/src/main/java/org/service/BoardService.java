@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.vo.AttachVo;
 import org.vo.BoardVo;
 
 public interface BoardService {

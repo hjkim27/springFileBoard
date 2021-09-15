@@ -8,10 +8,10 @@
 	<insert id="insert" parameterType="attachVo">
 		insert into ATTACH(NUM, BNUM, FILENAME, SAVENAME, FILESIZE, REGDATE) 
 		values (ATTACH_SEQ.nextval, 
-		<if test="bNum==0">
+		<if test="num==0">
 			BOARD_SEQ.currval, 
 		</if>
-		<if test="bNum!=0">
+		<if test="num!=0">
 			#{bNum}, 
 		</if>
 			#{fileName}, #{saveName}, #{fileSize}, #{regdate})

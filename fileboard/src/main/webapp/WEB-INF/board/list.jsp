@@ -102,7 +102,7 @@
 			<c:if test="${startPage>pageBlock }">
 				<a href="list.board?${options}pageNum=${startPage-pageBlock }">[이전]</a>
 			</c:if>
-			<c:forEach var="i" begin="${startPage }" end="${endPage }">
+			<c:forEach var="i" begin="${startPage }" end="${endPage }" >
 				<a href="list.board?${options}pageNum=${i }">[${i }]</a>
 			</c:forEach>
 			<c:if test="${endPage<pageCount }">

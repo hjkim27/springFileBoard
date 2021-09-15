@@ -3,8 +3,6 @@ package org.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.vo.AttachVo;
-
 public interface AttachDao {
 	// 첨부파일 추가
 	public int insert(Map<String, Object> map);

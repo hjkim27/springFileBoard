@@ -46,7 +46,9 @@ public class BoardDaoImpl implements BoardDao {
 	}
 	
 	public BoardVo detail(int num) {
-		return sqlSessionTemplate.selectOne("detail", num);
+		//return sqlSessionTemplate.selectOne("detail", num);
+		List<BoardVo> list = sqlSessionTemplate.selectList("detail", num);
+		return list.isEmpty()? null :list.get(0);
 	}
 	
 	public List<BoardVo> detailAnswer(int num) {

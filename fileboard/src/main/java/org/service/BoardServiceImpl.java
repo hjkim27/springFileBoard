@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.util.FileUtils;
-import org.vo.AttachVo;
 import org.vo.BoardVo;
 
 @Service // 로직처리 : 서비스레이어, 내부에서 자바 로직을 처리함
@@ -25,8 +24,10 @@ public class BoardServiceImpl implements BoardService {
 	public void insert(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception {
 		boardDao.insert(vo);
 		List<Map<String, Object>> fileList = fileUtils.fileInfo(vo, mpReq);
-		for (int i = 0; i < fileList.size(); i++) {
-			attachDao.insert(fileList.get(i));
+		if(fileList!=null && fileList.size()>0) {
+			for (int i = 0; i < fileList.size(); i++) {
+				attachDao.insert(fileList.get(i));
+			}
 		}
 	}
 
@@ -90,8 +91,13 @@ public class BoardServiceImpl implements BoardService {
 	public void edit(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception {
 		boardDao.update(vo);
 		List<Map<String, Object>> fileList = fileUtils.fileInfo(vo, mpReq);
-		for (int i = 0; i < fileList.size(); i++) {
-			attachDao.insert(fileList.get(i));
+		if(fileList!=null && fileList.size()>0) {
+			for (int i = 0; i < fileList.size(); i++) {
+				long fileSize = (long) fileList.get(i).get("fileSize"); 
+				if(fileSize!=0) {
+					attachDao.insert(fileList.get(i));
+				}
+			}
 		}
 	}
 

@@ -1,7 +1,5 @@
 package common;
 
-import java.sql.Timestamp;
-
 public class DeleteCommand {
 	private int num;
 	private String password;

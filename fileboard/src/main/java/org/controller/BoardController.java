@@ -6,7 +6,6 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileUtils;
 import org.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.vo.BoardVo;
 
@@ -71,6 +68,7 @@ public class BoardController {
 		int currentPage = pageNum;
 		int start = (currentPage - 1) * pageSize + 1;
 		int end = currentPage * pageSize;
+		System.out.println(start + "," + end);
 		String type = null;
 		String str = null;
 		Integer count = null;
@@ -92,7 +90,7 @@ public class BoardController {
 				result = boardService.list(start, end);
 			} else {
 				result = Collections.emptyList();
-			}
+			} 
 		}
 		model.addAttribute("list", result);
 
@@ -137,12 +135,6 @@ public class BoardController {
 		resp.getOutputStream().write(fileByte);
 		resp.getOutputStream().flush();
 		resp.getOutputStream().close();
-	}
-
-	private String transferDate(Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		String tmp = sdf.format(date).toString();
-		return tmp;
 	}
 	
 	@RequestMapping(value = "/updateForm.board")

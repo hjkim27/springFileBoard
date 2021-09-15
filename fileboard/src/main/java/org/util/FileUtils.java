@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -13,7 +12,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.vo.AttachVo;
 import org.vo.BoardVo;
 
 @Component("fileUtils")
@@ -59,7 +57,6 @@ public class FileUtils {
 			hs.put("fileSize", fileSize);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 			hs.put("regdate", sdf.format(new Date()).toString());
-			hs.put("delCk", "N");
 			list.add(hs);
 		}
 

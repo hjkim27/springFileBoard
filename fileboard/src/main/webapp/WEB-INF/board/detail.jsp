@@ -37,7 +37,7 @@
 				<td>첨부파일</td>
 				<td colspan="3">
 					<c:forEach var="file" items="${files}">
-						<a href="<c:url value="/download"/>?num=${file.NUM}"> ${file.FILENAME } </a>(${file.FILESIZE}) <br>
+						<a href="<c:url value="/download"/>?num=${file.NUM}"> ${file.FILENAME } </a>(${file.FILESIZE}kb) <br>
 					</c:forEach>
 				</td>
 			</tr>
@@ -67,7 +67,7 @@
 		</tr>
 		<tr>
 			<td colspan="2"  style="padding-bottom: 30px; border-bottom: none;">
-			<form action="delete.board" method="get">
+			<form action="deleteForm.board" method="get">
 				<input type="hidden" name = "num" value="${re.num }">
 				<input type="submit" value="삭제">
 			</form>
