@@ -10,6 +10,7 @@ public class ReplyVo {
 	private Timestamp regdate;
 	private int depth;
 	private int ref;
+	private int step;
 	
 	public ReplyVo() {}
 
@@ -80,6 +81,12 @@ public class ReplyVo {
 		this.ref = ref;
 	}
 
+	public int getStep() {
+		return step;
+	}
 	
+	public void setStep(int step) {
+		this.step = step;
+	}
 	
 }

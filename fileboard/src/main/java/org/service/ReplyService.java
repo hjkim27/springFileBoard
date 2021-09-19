@@ -20,6 +20,4 @@ public interface ReplyService {
 
 	// 게시글 댓글 갯수 확인
 	public List<Map<Object, Object>> answerCount() throws Exception;
-
-
 }

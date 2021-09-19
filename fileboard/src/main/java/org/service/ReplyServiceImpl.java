@@ -42,5 +42,4 @@ public class ReplyServiceImpl implements ReplyService {
 	public List<Map<Object, Object>> answerCount() throws Exception {
 		return replyDao.countReply();
 	}
-
 }

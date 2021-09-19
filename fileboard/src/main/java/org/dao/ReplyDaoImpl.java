@@ -40,5 +40,4 @@ public class ReplyDaoImpl implements ReplyDao {
 	public List<Map<Object, Object>> countReply() throws Exception {
 		return sqlSessionTemplate.selectList("countReply");
 	}
-
 }

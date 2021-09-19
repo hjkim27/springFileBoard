@@ -7,7 +7,13 @@
 <mapper namespace="refDao">
 	<insert id="insertReply" parameterType="replyVo">
 		insert into REFBOARD(NUM, BNUM, WRITER, CONTENT, DEPTH, REF)
-		 values (REFBOARD_SEQ.nextval, #{bNum}, #{writer}, #{content}, #{depth}, #{ref})
+		 values (REFBOARD_SEQ.nextval, #{bNum}, #{writer}, #{content}, #{depth},
+		 <if test="ref==0">
+			 REFBOARD_SEQ.currval)
+		 </if>
+		 <if test="ref!=0">
+			 #{ref})
+		 </if>
 		 <selectKey keyProperty="num" resultType="Integer">
 		 		select NVL(max(num),0) from REFBOARD
 		 </selectKey>
@@ -19,7 +25,7 @@
 		delete from REFBOARD where REF=#{num}
 	</delete>
 	<select id="replyList" parameterType="Integer" resultType="replyVo">
-		select * from REFBOARD where BNUM=#{bNum} order by REF asc, DEPTH asc
+		select * from REFBOARD where BNUM=#{bNum} order by REF ASC, STEP ASC, DEPTH ASC
 	</select>
 	<select id="countReply" resultType="hashMap">
 		select BNUM, count(BNUM) ANSWER from REFBOARD WHERE DEPTH=0 group by BNUM

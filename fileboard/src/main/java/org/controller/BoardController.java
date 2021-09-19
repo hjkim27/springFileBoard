@@ -65,6 +65,7 @@ public class BoardController {
 
 	@RequestMapping(value = "/writeRef.board", method = RequestMethod.POST)
 	public String write(RegistRefCommand cmd) throws Exception{
+		System.out.println("&&");
 		ReplyVo vo = new ReplyVo();
 		vo.setbNum(cmd.getbNum());
 		vo.setWriter(cmd.getWriter());
@@ -134,7 +135,6 @@ public class BoardController {
 		int num = vo.getNum();
 		model.addAttribute("detail", boardService.read(num));
 		model.addAttribute("answer", replyService.answerAll(num));
-		System.out.println(replyService.answerAll(num));
 		model.addAttribute("files", boardService.fileList(num));
 		boardService.readCount(num);
 		return "detail";
@@ -143,7 +143,7 @@ public class BoardController {
 	@RequestMapping(value = "/download")
 	public void fileDownload(int num, HttpServletResponse resp) throws Exception {
 		Map<String, Object> result = boardService.downFile(num);
-		System.out.println(result);
+
 		String saveName = (String) result.get("SAVENAME");
 		String fileName = (String) result.get("FILENAME");
 

@@ -50,42 +50,37 @@
 	</p>
 	<br>
 	<p>
-		답글쓰기
-		<form action="<c:url value='writeRef.board'/>" method="post">
-			<input type="hidden" name="bNum" value=${detail.num }> 
-			<table>
+		<table>
+			<form action="writeRef.board" method="post">
+			<input type="hidden" name="bNum" value="${detail.num }"/> 
+			<input type="hidden" name="writer" value="${detail.writer }"/> 
 				<tr>
 					<td>
 						작성자 : ${detail.writer }<br>
 						<textarea rows="3" style="width: 99%; font-size: 12; resize: none;" name="content"></textarea>
 						<input type="submit" value="답글달기"></td>
 				</tr>
-			</table>
-		</form>
+			</form>
+		</table>
 
-			<c:forEach var="re" items="${answer }">
-		<table style="background: #F6F5F5; margin-bottom: 3px">
+
+		<c:forEach var="re" items="${answer }">
+			<table style="background: #F6F5F5; padding-left: ${2*re.depth}%">
 				<tr>
 					<td style="border: none;">
 						작성자: ${re.writer } &nbsp;|&nbsp;
 						작성일: <fmt:formatDate value="${re.regdate }" type="both" pattern="yyyy-MM-dd" /> 
 					</td>
-					<td rowspan="2" style="padding-bottom: 30px; border-bottom: none;">
-						<form action="deleteForm.board" method="get">
-							<input type="hidden" name="num" value="${re.num }"> 
-							<input type="submit" value="삭제">
-						</form>
-						<form action="updateForm.board" method="post">
-							<input type="hidden" name="num" value="${re.num }"> 
-							<input type="submit" value="수정">
-						</form>
+					<td style="padding-bottom: 30px; border-bottom: none">
+						<input type="button" onclick="location.href='deleteForm.board'" value="삭제">
+						<input type="button" onclick="location.href='updateForm.board'" value="수정">
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">내용: ${fn:replace(re.content, replaceChar, "<br/>")}</td>
 				</tr>
-		</table>
-			</c:forEach>
+			</table>
+		</c:forEach>
 	</p>
 	</div>
 </article>
