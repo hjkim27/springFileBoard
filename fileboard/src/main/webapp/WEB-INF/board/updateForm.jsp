@@ -24,7 +24,7 @@
 				<td colspan="5"><input id="inputbox" type="text" name="title" value="${update.title }"></td>
 			</tr>
 			<tr>
-				<td colspan="6"><textarea style="width: 99%; font-size: 12" rows="20" name="content">${update.content }</textarea></td>
+				<td colspan="6"><textarea style="width: 99%; font-size: 12; resize: vertical;" rows="20" name="content">${update.content }</textarea></td>
 			</tr>
 			<c:if test="${update.num eq update.ref}">
 				<td id="head">첨부파일</td>

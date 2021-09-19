@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.service.BoardService;
+import org.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,17 +21,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.vo.BoardVo;
+import org.vo.ReplyVo;
 
 import common.SearchCommand;
 import common.UpdateCommand;
 import common.DeleteCommand;
 import common.PageCommand;
 import common.RegistCommand;
+import common.RegistRefCommand;
 
 @Controller // 컨트롤러 : 프로젝트 레이어, 웹 요청과 응답 처리
 public class BoardController {
 	@Autowired
 	BoardService boardService;
+	@Autowired
+	ReplyService replyService;
 
 	@RequestMapping(value = "/writeForm.board", method = RequestMethod.GET)
 	public String WriteView(Integer num, Model model) throws Exception {
@@ -58,6 +63,22 @@ public class BoardController {
 		return "redirect:/list.board";
 	}
 
+	@RequestMapping(value = "/writeRef.board", method = RequestMethod.POST)
+	public String write(RegistRefCommand cmd) throws Exception{
+		ReplyVo vo = new ReplyVo();
+		vo.setbNum(cmd.getbNum());
+		vo.setWriter(cmd.getWriter());
+		vo.setContent(cmd.getContent());
+		vo.setRef(cmd.getRef());
+		if(cmd.isNewReply()) {
+			vo.setDepth(0);
+		} else {
+			vo.setDepth(cmd.getDepth()+1);
+		}
+		replyService.insert(vo);
+		return "redirect:/detail.board?num="+cmd.getbNum();
+	}
+	
 	@RequestMapping("/list.board")
 	public String listView(SearchCommand search, Model model) throws Exception {
 		Integer pageNum = search.getPageNum();
@@ -68,7 +89,6 @@ public class BoardController {
 		int currentPage = pageNum;
 		int start = (currentPage - 1) * pageSize + 1;
 		int end = currentPage * pageSize;
-		System.out.println(start + "," + end);
 		String type = null;
 		String str = null;
 		Integer count = null;
@@ -100,7 +120,7 @@ public class BoardController {
 		PageCommand pageCmd = new PageCommand(currentPage, start, end, count, pageSize, number);
 		model.addAttribute("cmd", pageCmd);
 
-		List<Map<Object, Object>> answerCount = boardService.answerCount();
+		List<Map<Object, Object>> answerCount = replyService.answerCount();
 		model.addAttribute("answerCount", answerCount);
 
 		List<Map<Object, Object>> fileCount = boardService.fileCount();
@@ -113,7 +133,8 @@ public class BoardController {
 	public String read(BoardVo vo, Model model) throws Exception {
 		int num = vo.getNum();
 		model.addAttribute("detail", boardService.read(num));
-		model.addAttribute("answer", boardService.answer(num));
+		model.addAttribute("answer", replyService.answerAll(num));
+		System.out.println(replyService.answerAll(num));
 		model.addAttribute("files", boardService.fileList(num));
 		boardService.readCount(num);
 		return "detail";

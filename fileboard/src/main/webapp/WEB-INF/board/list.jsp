@@ -54,8 +54,8 @@
 						<a href="detail.board?num=${vo.num }">
 							${vo.title}
 							<c:forEach var="ansCount" items="${answerCount }">
-								<c:if test="${ansCount.REF==vo.num and ansCount.REFCOUNT>1}">
-									 [<c:out value="${ansCount.REFCOUNT-1 }"/>]
+								<c:if test="${ansCount.BNUM==vo.num and ansCount.ANSWER>0}">
+									 [<c:out value="${ansCount.ANSWER}"/>]
 								</c:if>
 							</c:forEach>
 						</a>

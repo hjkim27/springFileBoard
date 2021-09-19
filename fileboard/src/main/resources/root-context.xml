@@ -43,6 +43,7 @@
 			<list>
 				<value>classpath:config/sqlmap-board.xml</value><!-- sql쿼리 메서드와 매핑된 sql구문을 정의한 파일 지정 -->
 				<value>classpath:config/sqlmap-attach.xml</value>
+				<value>classpath:config/sqlmap-reply.xml</value>
 			</list>
 		</property>		
 	</bean>

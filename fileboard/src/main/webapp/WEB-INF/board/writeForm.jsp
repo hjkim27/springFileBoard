@@ -36,7 +36,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="4"><textarea style="width: 99%; font-size: 12" rows="20" name="content" required></textarea></td>
+				<td colspan="4"><textarea style="width: 99%; font-size: 12; resize: vertical;" rows="20" name="content" required></textarea></td>
 			</tr>
 			<tr>
 			<c:if test="${num eq null }">

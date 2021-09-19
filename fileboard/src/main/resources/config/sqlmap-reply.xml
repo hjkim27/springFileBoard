@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 스프링이 DB에 쿼리 요청 시 사용하는 메서드가 참조할 sql mapping 파일 정의 -->
+<mapper namespace="refDao">
+	<insert id="insertReply" parameterType="replyVo">
+		insert into REFBOARD(NUM, BNUM, WRITER, CONTENT, DEPTH, REF)
+		 values (REFBOARD_SEQ.nextval, #{bNum}, #{writer}, #{content}, #{depth}, #{ref})
+		 <selectKey keyProperty="num" resultType="Integer">
+		 		select NVL(max(num),0) from REFBOARD
+		 </selectKey>
+	</insert>
+	<update id="updateReply" parameterType="hashMap">
+		update REFBOARD set CONTENT=#{content} where NUM=#{num}		
+	</update>
+	<delete id="deleteReply" parameterType="Integer">
+		delete from REFBOARD where REF=#{num}
+	</delete>
+	<select id="replyList" parameterType="Integer" resultType="replyVo">
+		select * from REFBOARD where BNUM=#{bNum} order by REF asc, DEPTH asc
+	</select>
+	<select id="countReply" resultType="hashMap">
+		select BNUM, count(BNUM) ANSWER from REFBOARD WHERE DEPTH=0 group by BNUM
+	</select>
+</mapper>

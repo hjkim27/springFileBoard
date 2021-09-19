@@ -7,12 +7,7 @@
 <mapper namespace="boardDao">
 	<insert id="insertBoard" parameterType="boardVo">
 		insert into BOARD(NUM, WRITER, TITLE, CONTENT, REGDATE, DEPTH, REF, PASSWORD)
-		<if test='ref!=0'>
-		 values (BOARD_SEQ.nextval, #{writer}, #{title}, #{content}, #{regdate}, #{depth}, #{ref}, #{password})
-		</if>
-		<if test='ref==0'>
 		 values (BOARD_SEQ.nextval, #{writer}, #{title}, #{content}, #{regdate}, #{depth}, BOARD_SEQ.currval, #{password})
-		</if>
 		 <selectKey keyProperty="num" resultType="Integer">
 		 		select NVL(max(num),0) from BOARD
 		 </selectKey>

@@ -12,5 +12,6 @@
 	<typeAliases>
 		<typeAlias alias="boardVo" type="org.vo.BoardVo"/>
 		<typeAlias alias="attachVo" type="org.vo.AttachVo"/>
+		<typeAlias alias="replyVo" type="org.vo.ReplyVo"/>
 	</typeAliases>
 </configuration>

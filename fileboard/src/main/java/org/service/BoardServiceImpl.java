@@ -52,11 +52,6 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<Map<Object, Object>> answerCount() {
-		return boardDao.boardRef();
-	}
-
-	@Override
 	public List<Map<Object, Object>> fileCount() {
 		return attachDao.countFileList();
 	}
@@ -64,11 +59,6 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public BoardVo read(int num) throws Exception {
 		return boardDao.detail(num);
-	}
-
-	@Override
-	public List<BoardVo> answer(int num) throws Exception {
-		return boardDao.detailAnswer(num);
 	}
 
 	@Override
