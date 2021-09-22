@@ -65,7 +65,6 @@ public class BoardController {
 
 	@RequestMapping(value = "/writeRef.board", method = RequestMethod.POST)
 	public String write(RegistRefCommand cmd) throws Exception{
-		System.out.println("&&");
 		ReplyVo vo = new ReplyVo();
 		vo.setbNum(cmd.getbNum());
 		vo.setWriter(cmd.getWriter());

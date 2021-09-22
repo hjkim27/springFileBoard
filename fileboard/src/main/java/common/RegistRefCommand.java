@@ -44,11 +44,4 @@ public class RegistRefCommand {
 			return true;
 		}
 	}
-	@Override
-	public String toString() {
-		return "RegistRefCommand [bNum=" + bNum + ", writer=" + writer + ", content=" + content + ", ref=" + ref
-				+ ", depth=" + depth + "]";
-	}
-	
-	
 }
