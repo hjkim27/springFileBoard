@@ -31,10 +31,7 @@ public class AttachDaoImpl implements AttachDao {
 		return sqlSessionTemplate.selectOne("downFile", num);
 	}
 
-	public void delete(String type, int num) throws Exception {
-		Map<String, Object> hs = new HashMap<String, Object>();
-		hs.put("type", type);
-		hs.put("num", num);
+	public void delete(Map<String, Object> hs) throws Exception {
 		sqlSessionTemplate.delete("delete", hs);
 	}
 

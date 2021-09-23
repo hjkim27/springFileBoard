@@ -10,12 +10,12 @@ public interface BoardDao {
 	public void insert(BoardVo vo) throws Exception;
 	
 	// 게시글 목록 조회
-	public List<BoardVo> selectAll(int start, int end) throws Exception;
+	public List<BoardVo> selectAll(Map<String, Object> hs) throws Exception;
 	public int boardCount();
 	
 	// 게시글 검색
-	public List<BoardVo> search(String type, String str, int start, int end) throws Exception;	// type: writer, title	str: 검색내용
-	public int boardCount(String type, String str);
+	public List<BoardVo> search(Map<String, Object> hs) throws Exception;	// type: writer, title	str: 검색내용
+	public int boardCount(Map<String, Object> hs);
 	
 	// 게시글 상세페이지
 	public BoardVo detail(int num) throws Exception;
@@ -32,6 +32,6 @@ public interface BoardDao {
 	// 게시글 삭제
 	public void delete(int num);
 	
-
-	public List<Map<Object, Object>> boardRef();
+	// 게시글 이전글, 다음글 확인
+	public BoardVo nextPage(int num, String type) throws Exception;
 }

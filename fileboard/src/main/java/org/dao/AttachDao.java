@@ -17,5 +17,5 @@ public interface AttachDao {
 	public Map<String, Object> downFile(int num) throws Exception;
 	
 	// 첨부파일 삭제처리
-	public void delete(String type, int num) throws Exception;
+	public void delete(Map<String, Object> hs) throws Exception;
 }

@@ -40,11 +40,6 @@
 	<update id="hitIt" parameterType="Integer">
 		update BOARD set READCOUNT=READCOUNT+1 where NUM=#{num}
 	</update>
-	
-	<select id="boardRef" resultType="HashMap">
-		select REF, count(*) refcount from BOARD group by REF
-	</select>
-	
 	<select id="boardCount" resultType="Integer">
 		select count(distinct REF) from BOARD
 	</select>

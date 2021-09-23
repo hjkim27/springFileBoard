@@ -28,6 +28,7 @@ public class FileUtils {
 
 	// 파일 추가(저장)
 	public List<Map<String, Object>> fileInfo(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception {
+		System.out.println(uploadPath);
 		List<MultipartFile> files = mpReq.getFiles("files");
 		
 		MultipartFile multipartFile = null;
@@ -67,8 +68,15 @@ public class FileUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date today = new Date();
 		String datePath = sdf.format(today) + "\\";
-		mkDir(uploadPath, datePath);
-		return datePath;
+		
+		int len = uploadPath.length();
+		String lastPath = uploadPath.substring(len-9,len);
+		if(lastPath.equals(datePath)) {
+			return "";
+		} else {
+			mkDir(uploadPath, datePath);
+			return datePath;
+		}
 	}
 
 	private static void mkDir(String uploadPath, String datePath) {

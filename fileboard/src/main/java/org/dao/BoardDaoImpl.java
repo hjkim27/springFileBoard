@@ -20,33 +20,21 @@ public class BoardDaoImpl implements BoardDao {
 		sqlSessionTemplate.insert("insertBoard", vo);
 	}
 
-	public List<BoardVo> selectAll(int start, int end) {
-		HashMap<String, Integer> hs = new HashMap<String, Integer>();
-		hs.put("start", start);
-		hs.put("end", end);
+	public List<BoardVo> selectAll(Map<String, Object> hs) {
 		return sqlSessionTemplate.selectList("selectAll", hs);
 	}
 	public int boardCount() {
 		return sqlSessionTemplate.selectOne("boardCount");
 	}
 	
-	public List<BoardVo> search(String type, String str, int start, int end) {
-		HashMap<String, Object> hs = new HashMap<String, Object>();
-		hs.put("type", type);
-		hs.put("str", str);
-		hs.put("start", start);
-		hs.put("end", end);
+	public List<BoardVo> search(Map<String, Object> hs) {
 		return sqlSessionTemplate.selectList("search", hs);		
 	}
-	public int boardCount(String type, String str) {
-		HashMap<String, String> hs = new HashMap<String, String>();
-		hs.put("type", type);
-		hs.put("str", str);
+	public int boardCount(Map<String, Object> hs) {
 		return sqlSessionTemplate.selectOne("searchBoardCount", hs);
 	}
 	
 	public BoardVo detail(int num) {
-		//return sqlSessionTemplate.selectOne("detail", num);
 		List<BoardVo> list = sqlSessionTemplate.selectList("detail", num);
 		return list.isEmpty()? null :list.get(0);
 	}
@@ -66,14 +54,9 @@ public class BoardDaoImpl implements BoardDao {
 	public void delete(int num) {
 		sqlSessionTemplate.delete("deleteBoard", num);
 	}
-	
 
-//	확인 필요
-	public List<Map<Object, Object>> boardRef() {
-		return sqlSessionTemplate.selectList("boardRef");
+	@Override
+	public BoardVo nextPage(int num, String type) throws Exception {
+		return null;
 	}
-
-	
-
-
 }

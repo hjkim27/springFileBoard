@@ -1,5 +1,6 @@
 package org.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,10 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardVo> list(int start, int end) throws Exception {
-		return boardDao.selectAll(start, end);
+		Map<String, Object> hs = new HashMap<String, Object>();
+		hs.put("start", start);
+		hs.put("end", end);
+		return boardDao.selectAll(hs);
 	}
 
 	@Override
@@ -43,12 +47,20 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardVo> search(String type, String str, int start, int end) throws Exception {
-		return boardDao.search(type, str, start, end);
+		HashMap<String, Object> hs = new HashMap<String, Object>();
+		hs.put("type", type);
+		hs.put("str", str);
+		hs.put("start", start);
+		hs.put("end", end);
+		return boardDao.search(hs);
 	}
 
 	@Override
 	public int searchSize(String type, String str) {
-		return boardDao.boardCount(type, str);
+		Map<String, Object> hs = new HashMap<String, Object>();
+		hs.put("type", type);
+		hs.put("str", str);
+		return boardDao.boardCount(hs);
 	}
 
 	@Override
@@ -96,6 +108,9 @@ public class BoardServiceImpl implements BoardService {
 		if(type.equals("article")) {
 			boardDao.delete(num);
 		}
-		attachDao.delete(type, num);
+		Map<String, Object> hs = new HashMap<String, Object>();
+		hs.put("type", type);
+		hs.put("num", num);
+		attachDao.delete(hs);
 	}
 }
