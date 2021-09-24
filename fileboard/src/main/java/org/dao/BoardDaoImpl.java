@@ -56,8 +56,8 @@ public class BoardDaoImpl implements BoardDao {
 	}
 
 	@Override
-	public Integer nextNum(Map<String, Object> hs) throws Exception {
-		return sqlSessionTemplate.selectOne("nextNum", hs);
+	public Map<String, Integer> nextPage(int num) throws Exception {
+		return sqlSessionTemplate.selectOne("nextPage", num);
 		
 	}
 }

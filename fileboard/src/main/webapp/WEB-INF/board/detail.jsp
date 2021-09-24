@@ -52,8 +52,12 @@
 			</tr>
 			<tr>
 				<td>
-					<a href="detail.board?num=${detail.num}&page=before">이전글</a>
-					<a href="detail.board?num=${detail.num}&page=atter">다음글</a>
+				<c:if test="${nextPage.BEFORE != null }">
+					<a href="detail.board?num=${nextPage.BEFORE}">이전글</a>
+				</c:if>
+				<c:if test="${nextPage.AFTER != null }">
+					<a href="detail.board?num=${nextPage.AFTER}">다음글</a>
+				</c:if>
 				</td>
 			</tr>
 		</table>

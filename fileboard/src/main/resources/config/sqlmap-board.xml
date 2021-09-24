@@ -47,12 +47,10 @@
 		select count(*) from BOARD where REF=NUM and
 			${type} LIKE '%'||#{str}||'%'
 	</select>
-	<select id="nextPage" parameterType="hashMap" resultType="Integer">
-		<if test="page == before">
-			select max(NUM) from BOARD where NUM <![CDATA[<]]> #{num};
-		</if>
-		<if test="page == after">
-			select min(NUM) from BOARD where NUM <![CDATA[>]]> #{num};
-		</if>
+	<select id="nextPage" parameterType="Integer" resultType="hashMap">
+		select (select max(NUM) from BOARD where NUM<![CDATA[<]]>#{num}) before,
+			num, 
+			(select min(NUM) from BOARD where NUM<![CDATA[>]]>#{num}) after
+			from BOARD where NUM=#{num}
 	</select>
 </mapper>

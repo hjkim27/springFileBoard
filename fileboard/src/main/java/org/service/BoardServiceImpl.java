@@ -117,10 +117,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Integer nextNum(String page, int num) throws Exception {
-		Map<String, Object> hs = new HashMap<String, Object>();
-		hs.put("page", page);
-		hs.put("num", num);
-		return boardDao.nextNum(hs);
+	public Map<String, Integer> nextPage(int num) throws Exception {
+		System.out.println(num);
+		return boardDao.nextPage(num);
 	}
 }

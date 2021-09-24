@@ -25,6 +25,7 @@ import org.vo.ReplyVo;
 
 import common.SearchCommand;
 import common.UpdateCommand;
+import oracle.net.aso.b;
 import common.DeleteCommand;
 import common.PageCommand;
 import common.RegistCommand;
@@ -125,12 +126,10 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/detail.board")
-	public String read(BoardVo vo, Model model, String page) throws Exception {
-		int num = vo.getNum();
-		if(page!=null) {
-			num = boardService.nextNum(page, num);
-			System.out.println(num);
-		}
+	public String read(int num, Model model) throws Exception {
+		Map<String, Integer> nextPage = boardService.nextPage(num);
+		model.addAttribute("nextPage", nextPage);
+		System.out.println(nextPage);
 		model.addAttribute("detail", boardService.read(num));
 		model.addAttribute("answer", replyService.answerAll(num));
 		model.addAttribute("files", boardService.fileList(num));

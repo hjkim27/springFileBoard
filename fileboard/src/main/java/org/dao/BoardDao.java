@@ -33,5 +33,5 @@ public interface BoardDao {
 	public void delete(int num);
 	
 	// 게시글 이전글, 다음글 확인
-	public Integer nextNum(Map<String, Object> hs) throws Exception;
+	public Map<String, Integer> nextPage(int num) throws Exception;
 }
