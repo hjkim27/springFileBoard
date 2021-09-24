@@ -25,6 +25,7 @@ public class BoardServiceImpl implements BoardService {
 	public void insert(BoardVo vo, MultipartHttpServletRequest mpReq) throws Exception {
 		boardDao.insert(vo);
 		List<Map<String, Object>> fileList = fileUtils.fileInfo(vo, mpReq);
+		System.out.println(fileList);
 		if(fileList!=null && fileList.size()>0) {
 			for (int i = 0; i < fileList.size(); i++) {
 				attachDao.insert(fileList.get(i));
@@ -105,12 +106,21 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public void delete(String type, int num) throws Exception {
-		if(type.equals("article")) {
+		System.out.println(type);
+		if(type.equals("bNum")) {
 			boardDao.delete(num);
 		}
 		Map<String, Object> hs = new HashMap<String, Object>();
 		hs.put("type", type);
 		hs.put("num", num);
 		attachDao.delete(hs);
+	}
+
+	@Override
+	public Integer nextNum(String page, int num) throws Exception {
+		Map<String, Object> hs = new HashMap<String, Object>();
+		hs.put("page", page);
+		hs.put("num", num);
+		return boardDao.nextNum(hs);
 	}
 }

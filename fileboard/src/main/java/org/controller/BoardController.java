@@ -52,12 +52,7 @@ public class BoardController {
 		vo.setTitle(cmd.getTitle());
 		vo.setContent(cmd.getContent());
 		vo.setPassword(cmd.getPassword());
-		if (cmd.isAnswer()) {
-			vo.setRef(cmd.getNum());
-			vo.setDepth(boardService.read(cmd.getNum()).getDepth() + 1);
-		} else {
-			vo.setDepth(0);
-		}
+		vo.setDepth(0);
 		vo.setRegdate(new Timestamp(System.currentTimeMillis()));
 		boardService.insert(vo, mpReq);
 		return "redirect:/list.board";
@@ -130,8 +125,12 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/detail.board")
-	public String read(BoardVo vo, Model model) throws Exception {
+	public String read(BoardVo vo, Model model, String page) throws Exception {
 		int num = vo.getNum();
+		if(page!=null) {
+			num = boardService.nextNum(page, num);
+			System.out.println(num);
+		}
 		model.addAttribute("detail", boardService.read(num));
 		model.addAttribute("answer", replyService.answerAll(num));
 		model.addAttribute("files", boardService.fileList(num));
@@ -173,6 +172,9 @@ public class BoardController {
 		vo.setContent(cmd.getContent());
 		vo.setModdate(new Timestamp(System.currentTimeMillis()));
 		boardService.edit(vo, mpReq);
+		if(!cmd.checkPassword()) {
+			return "redirect:/list.board";
+		}
 		if(cmd.getDeleteNum()!=null && cmd.getDeleteNum().length!=0) {
 			for(int i:cmd.getDeleteNum()) {
 				boardService.delete("num", i);

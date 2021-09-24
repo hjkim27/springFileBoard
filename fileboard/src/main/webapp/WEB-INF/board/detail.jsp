@@ -43,12 +43,24 @@
 					</c:forEach>
 				</td>
 			</tr>
-			<input type="button" onclick="location.href='list.board'" value="목록">
-			<input type="button" onclick="location.href='deleteForm.board?num=${detail.num}'" value="삭제">
-			<input type="button" onclick="location.href='updateForm.board?num=${detail.num}'" value="수정">
+			<tr>
+				<td>
+					<input type="button" onclick="location.href='list.board'" value="목록">
+					<input type="button" onclick="location.href='deleteForm.board?num=${detail.num}'" value="삭제">
+					<input type="button" onclick="location.href='updateForm.board?num=${detail.num}'" value="수정">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="detail.board?num=${detail.num}&page=before">이전글</a>
+					<a href="detail.board?num=${detail.num}&page=atter">다음글</a>
+				</td>
+			</tr>
 		</table>
 	</p>
+	
 	<br>
+	
 	<p>
 		<table>
 			<form action="writeRef.board" method="post">

@@ -29,6 +29,7 @@
 		</table>
 		<br>
 		<input type="hidden" name="password" value="${delete.password }">
+		<input type="hidden" name="type" value="article">
 		<input type="submit" value="삭제">
 	</form>
 	</div>

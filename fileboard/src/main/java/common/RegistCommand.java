@@ -51,19 +51,4 @@ public class RegistCommand {
 	public void setDepth(int depth) {
 		this.depth = depth;
 	}
-	
-	public boolean isAnswer() {
-		if(num!=null && num!=0) {
-			return true;
-		}else {
-			return false;
-		}
-	}
-	@Override
-	public String toString() {
-		return "RegistCommand [num=" + num + ", writer=" + writer + ", title=" + title + ", content=" + content
-				+ ", password=" + password + ", ref=" + ref + ", depth=" + depth + "]";
-	}
-	
-	
 }

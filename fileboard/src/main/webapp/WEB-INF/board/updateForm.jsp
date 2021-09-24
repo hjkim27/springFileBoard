@@ -37,6 +37,7 @@
 			</c:if>
 		</table>
 		<input type="button" onclick="location.href='list.board'" value="취소">
+		<input type="hidden" name="password" value="${update.password }">
 		<input type="submit" value="저장">
 	</form>
 	</div>

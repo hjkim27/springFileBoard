@@ -38,4 +38,7 @@ public interface BoardService {
 
 	// 게시글 삭제
 	public void delete(String type, int num) throws Exception;
+	
+	// 게시글 이전글, 다음글
+	public Integer nextNum(String page, int num) throws Exception;
 }

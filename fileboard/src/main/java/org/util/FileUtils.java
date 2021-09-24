@@ -44,21 +44,23 @@ public class FileUtils {
 			hs = new HashMap<String, Object>();
 			uploadPath += calcPath(uploadPath);
 			fileName = partFile.getOriginalFilename();
-			UUID uuid = UUID.randomUUID();
-			saveName = uuid.toString()+"_"+fileName;
-			fileSize = partFile.getSize();
-			File file = new File(uploadPath+saveName);
-			partFile.transferTo(file);
-			
-			if(vo.getNum()!=0) {
-				hs.put("bNum", vo.getNum());
+			if(fileName!=null && !fileName.equals("")) {
+				UUID uuid = UUID.randomUUID();
+				saveName = uuid.toString()+"_"+fileName;
+				fileSize = partFile.getSize();
+				File file = new File(uploadPath+saveName);
+				partFile.transferTo(file);
+				
+				if(vo.getNum()!=0) {
+					hs.put("bNum", vo.getNum());
+				}
+				hs.put("fileName", fileName);
+				hs.put("saveName", saveName);
+				hs.put("fileSize", fileSize);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+				hs.put("regdate", sdf.format(new Date()).toString());
+				list.add(hs);				
 			}
-			hs.put("fileName", fileName);
-			hs.put("saveName", saveName);
-			hs.put("fileSize", fileSize);
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-			hs.put("regdate", sdf.format(new Date()).toString());
-			list.add(hs);
 		}
 
 		return list;
