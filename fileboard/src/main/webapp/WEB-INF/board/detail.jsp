@@ -9,6 +9,15 @@
 <%
 	pageContext.setAttribute("replaceChar", "\n");
 %>
+<script>
+   const add_reply = () => {
+	    const box = document.getElementById("answer");
+        box.innerHTML = "<textarea rows='3' style='width: 90%; font-size: 12; resize: none;' name='content'></textarea> <input type='button' value='저장' onclick='btn(this)'>";
+    }
+   const btn = (obj) => {
+       document.getElementById('insert').submit();
+   }
+</script>
 
 <jsp:include page="boardHeader.jsp" flush="false" />
 
@@ -17,11 +26,12 @@
 		<h4>detail</h4>
 	</div>
 	<div>
-	<p>
 		<table>
 			<tr>
 				<td align="center">
-					<h2><b>${detail.title }</b></h2>
+					<h2>
+						<b>${detail.title }</b>
+					</h2>
 				</td>
 			</tr>
 			<tr style="text-align: right">
@@ -39,65 +49,67 @@
 				<td>
 					첨부파일
 					<c:forEach var="file" items="${files}">
-						<li><a href="<c:url value="/download"/>?num=${file.NUM}">${file.FILENAME } </a>(${file.FILESIZE}kb) <br></li>
+						<li><a href="<c:url value="/download"/>?num=${file.NUM}">${file.FILENAME }</a>(${file.FILESIZE}kb) <br></li>
 					</c:forEach>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="button" onclick="location.href='list.board'" value="목록">
-					<input type="button" onclick="location.href='deleteForm.board?num=${detail.num}'" value="삭제">
+					<input type="button" onclick="location.href='list.board'" value="목록"> 
+					<input type="button" onclick="location.href='deleteForm.board?num=${detail.num}'" value="삭제"> 
 					<input type="button" onclick="location.href='updateForm.board?num=${detail.num}'" value="수정">
 				</td>
 			</tr>
 			<tr>
 				<td>
-				<c:if test="${nextPage.BEFORE != null }">
-					<a href="detail.board?num=${nextPage.BEFORE}">이전글</a>
-				</c:if>
-				<c:if test="${nextPage.AFTER != null }">
-					<a href="detail.board?num=${nextPage.AFTER}">다음글</a>
-				</c:if>
+					<c:if test="${nextPage.BEFORE != null }">
+						<a href="detail.board?num=${nextPage.BEFORE}">이전글</a>
+					</c:if> <c:if test="${nextPage.AFTER != null }">
+						<a href="detail.board?num=${nextPage.AFTER}">다음글</a>
+					</c:if>
 				</td>
 			</tr>
 		</table>
-	</p>
-	
-	<br>
-	
-	<p>
+
+		<br>
+
 		<table>
 			<form action="writeRef.board" method="post">
-			<input type="hidden" name="bNum" value="${detail.num }"/> 
-			<input type="hidden" name="writer" value="${detail.writer }"/> 
+				<input type="hidden" name="bNum" value="${detail.num }" />
+				<input type="hidden" name="writer" value="${detail.writer }" />
 				<tr>
 					<td>
-						작성자 : ${detail.writer }<br>
+						작성자 : ${detail.writer }<br> 
 						<textarea rows="3" style="width: 99%; font-size: 12; resize: none;" name="content"></textarea>
-						<input type="submit" value="답글달기"></td>
+						<input type="submit" value="답글달기">
+					</td>
 				</tr>
 			</form>
 		</table>
-
 
 		<c:forEach var="re" items="${answer }">
 			<table style="background: #F6F5F5; padding-left: ${2*re.depth}%">
 				<tr>
 					<td style="border: none;">
 						작성자: ${re.writer } &nbsp;|&nbsp;
-						작성일: <fmt:formatDate value="${re.regdate }" type="both" pattern="yyyy-MM-dd" /> 
+						작성일: <fmt:formatDate value="${re.regdate }" type="both" pattern="yyyy-MM-dd" />
 					</td>
 					<td style="padding-bottom: 30px; border-bottom: none">
-						<input type="button" onclick="location.href='deleteForm.board'" value="삭제">
+						<input type="button" onclick="location.href='deleteForm.board'" value="삭제"> 
 						<input type="button" onclick="location.href='updateForm.board'" value="수정">
+						<input type="button" value="답변" onclick="add_reply()">
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2">내용: ${fn:replace(re.content, replaceChar, "<br/>")}</td>
+					<td colspan="2">
+						${fn:replace(re.content, replaceChar, "<br/>")}
+						<form action="writeRef.board" id="insert" method="post">
+							<div id="answer"></div>
+						</form>
+					</td>
 				</tr>
 			</table>
 		</c:forEach>
-	</p>
 	</div>
 </article>
 
