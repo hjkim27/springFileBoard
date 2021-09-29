@@ -88,5 +88,11 @@ public class ReplyVo {
 	public void setStep(int step) {
 		this.step = step;
 	}
+
+	@Override
+	public String toString() {
+		return "ReplyVo [num=" + num + ", bNum=" + bNum + ", writer=" + writer + ", content=" + content + ", regdate="
+				+ regdate + ", depth=" + depth + ", ref=" + ref + ", step=" + step + "]";
+	}
 	
 }

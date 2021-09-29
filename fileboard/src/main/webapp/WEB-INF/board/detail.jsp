@@ -10,12 +10,20 @@
 	pageContext.setAttribute("replaceChar", "\n");
 %>
 <script>
-   const add_reply = () => {
-	    const box = document.getElementById("answer");
-        box.innerHTML = "<textarea rows='3' style='width: 90%; font-size: 12; resize: none;' name='content'></textarea> <input type='button' value='저장' onclick='btn(this)'>";
-    }
+	const add_reply = () => {
+	    const box = document.getElementById("addReply");
+	    box.innerHTML = "<textarea rows='3' style='width: 90%; resize: none;' name='content'></textarea> <input type='button' value='저장' onclick='btn(this)'>";
+	}
+	const reply = () => {
+	    const box = document.getElementById("reply");
+	    box.innerHTML = "<textarea rows='3' style='width: 90%; resize: none;' name='content'></textarea> <input type='button' value='저장' onclick='btn(this)'>";
+	}
    const btn = (obj) => {
        document.getElementById('insert').submit();
+   }
+   function changeBtnName(){
+	   const btnElement = document.getElementById('reply');
+	   btnElement.value="저장";
    }
 </script>
 
@@ -28,14 +36,26 @@
 	<div>
 		<table>
 			<tr>
-				<td align="center">
+				<td align="center" colspan="2">
 					<h2>
 						<b>${detail.title }</b>
 					</h2>
 				</td>
 			</tr>
-			<tr style="text-align: right">
+			<tr>
 				<td>
+					<c:if test="${nextPage.AFTER != null }">
+						<a href="detail.board?num=${nextPage.AFTER}">이전글</a>
+					</c:if>
+				</td>
+				<td align="right">
+					 <c:if test="${nextPage.BEFORE != null }">
+						<a href="detail.board?num=${nextPage.BEFORE}">다음글</a>
+					</c:if>
+				</td>
+			</tr>
+			<tr style="text-align: right">
+				<td  colspan="2">
 					작성일: <fmt:formatDate value="${detail.regdate }" type="both" pattern="yyyy-MM-dd" /> &nbsp;|&nbsp; 
 					수정일: <fmt:formatDate value="${detail.moddate }" type="both" pattern="yyyy-MM-dd" /> &nbsp;|&nbsp; 
 					작성자: ${detail.writer } &nbsp;|&nbsp; 
@@ -43,10 +63,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td>${fn:replace(detail.content, replaceChar, "<br/>")}</td>
+				<td colspan="2" >${fn:replace(detail.content, replaceChar, "<br/>")}</td>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					첨부파일
 					<c:forEach var="file" items="${files}">
 						<li><a href="<c:url value="/download"/>?num=${file.NUM}">${file.FILENAME }</a>(${file.FILESIZE}kb) <br></li>
@@ -54,19 +74,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<input type="button" onclick="location.href='list.board'" value="목록"> 
 					<input type="button" onclick="location.href='deleteForm.board?num=${detail.num}'" value="삭제"> 
 					<input type="button" onclick="location.href='updateForm.board?num=${detail.num}'" value="수정">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<c:if test="${nextPage.BEFORE != null }">
-						<a href="detail.board?num=${nextPage.BEFORE}">이전글</a>
-					</c:if> <c:if test="${nextPage.AFTER != null }">
-						<a href="detail.board?num=${nextPage.AFTER}">다음글</a>
-					</c:if>
 				</td>
 			</tr>
 		</table>
@@ -74,21 +85,21 @@
 		<br>
 
 		<table>
-			<form action="writeRef.board" method="post">
+			<form action="writeRef.board" id="insert" method="post">
 				<input type="hidden" name="bNum" value="${detail.num }" />
 				<input type="hidden" name="writer" value="${detail.writer }" />
 				<tr>
 					<td>
 						작성자 : ${detail.writer }<br> 
-						<textarea rows="3" style="width: 99%; font-size: 12; resize: none;" name="content"></textarea>
-						<input type="submit" value="답글달기">
+						<input type="button" value="답글달기" onclick="reply()">
+						<div id="reply"></div>
 					</td>
 				</tr>
 			</form>
 		</table>
 
 		<c:forEach var="re" items="${answer }">
-			<table style="background: #F6F5F5; padding-left: ${2*re.depth}%">
+			<table style="background: #F6F5F5; padding-left: ${2*re.depth}%;">
 				<tr>
 					<td style="border: none;">
 						작성자: ${re.writer } &nbsp;|&nbsp;
@@ -104,6 +115,10 @@
 					<td colspan="2">
 						${fn:replace(re.content, replaceChar, "<br/>")}
 						<form action="writeRef.board" id="insert" method="post">
+							<input type="hidden" name="bNum" value="${re.bNum }" />
+							<input type="hidden" name="ref" value="${re.ref }" />
+							<input type="hidden" name="writer" value="${detail.writer }" />
+							<input type="hidden" name="depth" value="${re.depth }">
 							<div id="answer"></div>
 						</form>
 					</td>

@@ -38,7 +38,7 @@ public class RegistRefCommand {
 		this.depth = depth;
 	}
 	public boolean isNewReply() {
-		if(depth!=null && depth!=0) {
+		if(depth!=null && depth==0) {
 			return false;
 		}else {
 			return true;

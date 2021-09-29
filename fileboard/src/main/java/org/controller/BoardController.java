@@ -65,12 +65,14 @@ public class BoardController {
 		vo.setbNum(cmd.getbNum());
 		vo.setWriter(cmd.getWriter());
 		vo.setContent(cmd.getContent());
-		vo.setRef(cmd.getRef());
 		if(cmd.isNewReply()) {
+			vo.setRef(0);
 			vo.setDepth(0);
 		} else {
+			vo.setRef(cmd.getRef());
 			vo.setDepth(cmd.getDepth()+1);
 		}
+		System.out.println(vo);
 		replyService.insert(vo);
 		return "redirect:/detail.board?num="+cmd.getbNum();
 	}
@@ -129,7 +131,6 @@ public class BoardController {
 	public String read(int num, Model model) throws Exception {
 		Map<String, Integer> nextPage = boardService.nextPage(num);
 		model.addAttribute("nextPage", nextPage);
-		System.out.println(nextPage);
 		model.addAttribute("detail", boardService.read(num));
 		model.addAttribute("answer", replyService.answerAll(num));
 		model.addAttribute("files", boardService.fileList(num));
