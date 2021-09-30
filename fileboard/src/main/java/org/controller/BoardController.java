@@ -61,14 +61,17 @@ public class BoardController {
 
 	@RequestMapping(value = "/writeRef.board", method = RequestMethod.POST)
 	public String write(RegistRefCommand cmd) throws Exception{
+		System.out.println(cmd);
 		ReplyVo vo = new ReplyVo();
 		vo.setbNum(cmd.getbNum());
 		vo.setWriter(cmd.getWriter());
 		vo.setContent(cmd.getContent());
 		if(cmd.isNewReply()) {
+			System.out.println("답변입력");
 			vo.setRef(0);
 			vo.setDepth(0);
 		} else {
+			System.out.println("답변에 댓글 입력");
 			vo.setRef(cmd.getRef());
 			vo.setDepth(cmd.getDepth()+1);
 		}

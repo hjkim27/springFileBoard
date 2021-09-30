@@ -10,20 +10,12 @@
 	pageContext.setAttribute("replaceChar", "\n");
 %>
 <script>
-	const add_reply = () => {
-	    const box = document.getElementById("addReply");
-	    box.innerHTML = "<textarea rows='3' style='width: 90%; resize: none;' name='content'></textarea> <input type='button' value='저장' onclick='btn(this)'>";
-	}
 	const reply = () => {
 	    const box = document.getElementById("reply");
 	    box.innerHTML = "<textarea rows='3' style='width: 90%; resize: none;' name='content'></textarea> <input type='button' value='저장' onclick='btn(this)'>";
 	}
    const btn = (obj) => {
        document.getElementById('insert').submit();
-   }
-   function changeBtnName(){
-	   const btnElement = document.getElementById('reply');
-	   btnElement.value="저장";
    }
 </script>
 
@@ -84,47 +76,43 @@
 
 		<br>
 
-		<table>
+		<div style="padding-left: 0%;">
+			<div>
+				작성자 : ${detail.writer } <input type="button" value="답글달기" onclick="reply()">
+			</div>
 			<form action="writeRef.board" id="insert" method="post">
 				<input type="hidden" name="bNum" value="${detail.num }" />
 				<input type="hidden" name="writer" value="${detail.writer }" />
-				<tr>
-					<td>
-						작성자 : ${detail.writer }<br> 
-						<input type="button" value="답글달기" onclick="reply()">
-						<div id="reply"></div>
-					</td>
-				</tr>
+				<div id="reply"></div>
 			</form>
-		</table>
+		</div>
 
 		<c:forEach var="re" items="${answer }">
-			<table style="background: #F6F5F5; padding-left: ${2*re.depth}%;">
-				<tr>
-					<td style="border: none;">
-						작성자: ${re.writer } &nbsp;|&nbsp;
-						작성일: <fmt:formatDate value="${re.regdate }" type="both" pattern="yyyy-MM-dd" />
-					</td>
-					<td style="padding-bottom: 30px; border-bottom: none">
-						<input type="button" onclick="location.href='deleteForm.board'" value="삭제"> 
-						<input type="button" onclick="location.href='updateForm.board'" value="수정">
-						<input type="button" value="답변" onclick="add_reply()">
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						${fn:replace(re.content, replaceChar, "<br/>")}
-						<form action="writeRef.board" id="insert" method="post">
-							<input type="hidden" name="bNum" value="${re.bNum }" />
-							<input type="hidden" name="ref" value="${re.ref }" />
-							<input type="hidden" name="writer" value="${detail.writer }" />
-							<input type="hidden" name="depth" value="${re.depth }">
-							<div id="answer"></div>
-						</form>
-					</td>
-				</tr>
-			</table>
-		</c:forEach>
+			<div style="background: #F6F5F5; padding-left: ${2*re.depth}%; border-bottom: solid 1px black;">
+				작성자: ${re.writer } &nbsp;|&nbsp;
+				작성일: <fmt:formatDate value="${re.regdate }" type="both" pattern="yyyy-MM-dd" />
+					<input type="button" onclick="location.href='deleteForm.board'" value="삭제"> 
+					<input type="button" onclick="location.href='updateForm.board'" value="수정">
+					<input type="button" value="답변" onclick="add_reply${re.num}()">
+				<div>
+					${fn:replace(re.content, replaceChar, "<br/>")}
+				</div>
+				<form action="writeRef.board" id="insert" method="post">
+					<input type="hidden" name="bNum" value="${re.bNum }" />
+					<input type="hidden" name="writer" value="${detail.writer }" />
+					<input type="hidden" name="ref" value="${re.ref}" />
+					<div id="add_reply${re.num}"></div>
+				</form>
+			</div>
+			<script type="text/javascript">
+			const add_reply${re.num} = () => {
+				var name = '<c:out value="add_reply${re.num}"/>';
+				alert(name);
+			    const box = document.getElementById(name);
+			    box.innerHTML = "<textarea rows='3' style='width: 90%; resize: none;' name='content'></textarea> <input type='button' value='저장' onclick='btn(this)'>";
+			}
+			</script>
+			</c:forEach>
 	</div>
 </article>
 

@@ -38,10 +38,16 @@ public class RegistRefCommand {
 		this.depth = depth;
 	}
 	public boolean isNewReply() {
-		if(depth!=null && depth==0) {
+		if(ref!=0) {
 			return false;
 		}else {
 			return true;
 		}
 	}
+	@Override
+	public String toString() {
+		return "RegistRefCommand [bNum=" + bNum + ", writer=" + writer + ", content=" + content + ", ref=" + ref
+				+ ", depth=" + depth + "]";
+	}
+	
 }
